@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  template: 1
+  creator: 1
+  recipients: MyString
+  private: false
+
+two:
+  template: 1
+  creator: 1
+  recipients: MyString
+  private: false

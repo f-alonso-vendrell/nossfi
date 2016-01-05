@@ -1,0 +1,58 @@
+<h1>New template</h1>
+
+<% if @template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@template.errors.count, "error") %> prohibited this template from being saved:</h2>
+
+      <ul>
+      <% @template.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= render 'form' %>
+
+<h2>Template</h2>
+
+<div id="template"></div>
+
+
+
+<script type="text/javascript">
+
+   document.getElementById('new_template').style.display = 'none'; 
+
+</script>
+
+
+<h2>Form Fields</h2>
+
+
+(Optional) Select csv file to act as template: <input type="file" id="files" name="files[]" />
+<br/>
+<output id="list"></output>
+<br/>
+<div id="example"></div>
+
+<%= render 'javascripts' %>
+
+<script type="text/javascript">
+
+   data = [["<%= @template.title %>","<%= @template.desc %>",
+     "<%= @template.defaultemail %>"]];
+   hot.loadData(data);
+   hot.render();
+
+   data2 = templateParserTr("<%= @template.getFieldsAsCsv %>");
+   hot2.loadData(data2);
+   hot2.render();
+
+</script>
+
+
+<br/>
+<input id="clickMe" type="button" value="Create Template" onclick="submit();" />
+
+

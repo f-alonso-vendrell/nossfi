@@ -1,0 +1,93 @@
+<h1>Listing forms</h1>
+
+Forms for Template <%= link_to @template.title,  @template  %>
+
+<%= render 'filter' %>
+
+<br>
+
+<input id="search_field" placeholder="Search" type="search"/>
+
+<!-- Col to hide<input id="add" type="int">
+
+Col to show<input id="show" type="int"> -->
+
+<% template_fields = @template.getFields %>
+
+<%= render :partial => 'colsmanagement_renderer', :locals => {:fbookupload => "yes"}  %> 
+
+<select id="FilterList"></select>
+<script>
+var fragment = document.createDocumentFragment();
+  var opt;
+
+
+  <% @filters.each do |filter| %>
+
+    opt = document.createElement('option');
+    opt.innerHTML = "<%= filter.name %>";
+    opt.value = <%= filter.id %>;
+    fragment.appendChild(opt);
+
+  <%end%>
+
+  
+
+  var sel = document.getElementById('FilterList');
+  sel.appendChild(fragment);
+  <% if ! @cur_filter.nil? %>
+  sel.value = <%=@cur_filter.id%>;
+  <%end%>
+
+  </script>
+<br><br>
+
+<div id="example"></div>
+<div id="example2"></div>
+
+
+<br>
+
+<div hidden>
+<%= form_tag("/forms", :id => 'create_form', method: "post") do %>
+  <%= hidden_field_tag(:create_form_template_id,"") %>
+  <%= hidden_field_tag(:create_form_creator,"") %>
+  <%= hidden_field_tag(:create_form_recipients,"") %>
+  <%= hidden_field_tag(:create_form_private,"") %>
+  <%= hidden_field_tag(:create_form_data,"") %>
+  <%= submit_tag("Create") %>
+<% end %>
+
+<%= form_tag("/forms", :id => 'delete_form', method: "delete") do %>
+  <%= hidden_field_tag(:delete_form_data,"") %>
+  <%= submit_tag("Delete", data: { confirm: 'Are you sure?' }) %>
+<% end %>
+
+<%= form_tag("/forms_update", :id => 'update_forms', method: "post") do %>
+  <%= hidden_field_tag(:update_form_data,"") %>
+  <%= submit_tag("Update") %>
+<% end %>
+</div>
+
+
+<%= render 'javascripts_index' %>
+
+ 
+
+<h2>ACTIONS FOR SELECTED FORMS: </h2>
+
+<input id="deleteButton" type="button" value="Delete Selected" onclick="deleteSelected();" />
+
+<input id="clickMe6" type="button" value="Export Selected as CSV" onclick="exportSelected();" />
+
+<input id="updateButton" type="button" value="Submit Updated Forms" onclick="updateSelected();" />
+
+<div id="creation">
+
+  <input id="createButton" type="button" value="Submit New Forms" onclick="createForms('<%= @template.id %>','<%= current_user.id %>');" />
+
+</div>
+
+<script type="text/javascript">
+   buttonMngr.setupButtons(); 
+</script>

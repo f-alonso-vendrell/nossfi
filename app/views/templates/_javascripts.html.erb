@@ -1,0 +1,167 @@
+
+
+
+<script type="text/javascript">
+
+var data = [["","",""]];
+var initialized_row = function(index) {
+                        if (handsontable != undefined) {
+                            var data = hot.getData();
+                            data[index - 1] = ["","",""];
+                        }
+                    };
+var container = document.getElementById('template');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: ["Title", "Description", "Creator","Default email"],
+  columns: [
+      {type: "text"},
+      {type: "text"},
+      {type: "text"},
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  minSpareRows: 0,
+  search: true,
+  contextMenu: true
+});
+
+/*hot.addHook('afterCreateRow',function(index,ammount) {
+
+            // show some info
+//            console.log(index);
+            console.log(ammount);
+
+             var data = hot.getData();
+                     data[index-1][3]= "false";
+                     data[index-1][4]= "false";
+                     //hot.loadData(data);
+                     //hot.render();
+                        
+                    });
+*/
+
+</script>
+
+<script type="text/javascript">
+
+var data2 = [];
+var container = document.getElementById('example');
+var hot2 = new Handsontable(container, {
+  data: data2,
+  colHeaders: ["Field Name", "Description", "Hint", "Type","Selection data (optional)"],
+  columns: [
+      {type: "text"},
+      {type: "text"},
+      {type: "text"},
+      { type: 'dropdown',
+        source: ['text', 'link', 'numeric', 'date', 'checkbox', 'dropdown','reference']
+      },
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  minSpareRows: 1,
+  search: true,
+  contextMenu: true
+});
+</script>
+
+
+
+<script>
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      
+
+      // Only process image files.
+      if (!f.type.match('text/csv')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+
+      
+        output.push(theFile.result);
+        return function(e) {
+
+          // convert into 2D Array
+          data2 = templateParser(e.target.result);
+
+          console.log(data2);
+          hot2.loadData(data2);
+          hot2.render();
+
+
+          console.log(e.target.result);
+          
+         
+        };
+      })(f);
+
+      reader.readAsText(f);
+
+    }
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+
+ <script type="text/javascript">
+
+        function checkAndSet(indata)
+        {
+           if (indata == null)
+           {
+             return "";
+           }
+
+           return indata.replace(/[{}]/g, '');
+
+        }
+
+        function submit()
+        {
+             console.log(data[0][2].toString());
+
+             fields="";
+             for(var i=0;i<data2.length-1;i++)
+             {
+                data2[i][0] = checkAndSet(data2[i][0]);
+                data2[i][1] = checkAndSet(data2[i][1]);
+                data2[i][2] = checkAndSet(data2[i][2]);
+                data2[i][3] = checkAndSet(data2[i][3]);
+                data2[i][4] = checkAndSet(data2[i][4]);
+
+
+              fields=fields+"{{"+data2[i][0]+"}{"+
+                                 data2[i][1]+"}{"+
+                                 data2[i][2]+"}{"+
+                                 data2[i][3]+"}{"+
+                                 data2[i][4]+"}}";
+             }
+ 
+
+            document.getElementById('template_title').value=data[0][0];
+            document.getElementById('template_desc').value=data[0][1];
+            document.getElementById('template_creator').value="<%= current_user.id %>";
+            document.getElementById('template_templateVersion').value=1;
+            document.getElementById('template_fields').value=fields;
+            //document.getElementById('template_aprovable').value=data[0][3].toString();
+            //document.getElementById('template_acknowledgeable').value=data[0][4].toString();
+            document.getElementById('template_aprovable').value="false";
+            document.getElementById('template_acknowledgeable').value="false";
+            document.getElementById('template_defaultemail').value=data[0][2];
+            document.forms[0].submit()
+
+        }
+
+        
+</script>

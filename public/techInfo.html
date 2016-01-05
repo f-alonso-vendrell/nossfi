@@ -1,0 +1,32 @@
+<table style="width:100%">
+  <tr>
+    <th><a href="/">Home</a> </th>
+    <th><a href="/audit">Audits</a> </th>
+    <th><a href="/howtouse.html">How to use</a></th>
+    
+  </tr>
+  
+</table>
+
+<h1>Forms Technical Information</h1>
+
+<h2>Forms is not a microservice (but almost)</h2>
+<p> Initially though as a microservice, now Forms have some feats that could be set up separatelly</p>
+<p>Authentication: Done directly via email sending</p>
+<p>Authorization: All users within and organization (email domain) have the same level of privileges</p>
+<p>Accounting: Every change is accounted, no personalization</p>
+<p>Notifications: Done via email in a totally non-scallable manner, probably likelly to be separated in the future</p>
+
+<h2>Forms is not RESTfull (not even close...)</h2>
+<p>I will say that it is a Level1, resources are clear: templates and Forms...</p>
+<p>The good thing is that it can be easily evolved into being more RESTfull, as only 2 kind of resources are involved and they are very straigh forward</p>
+<p>It could end having MIME Types for Templates and Forms, even creating dinamically them upon creation of new templates</p>
+<p>But honestly this is not what I have in mind, Forms is focused on Humans, providing better means for a very fast entity to POST,PUT or DELETE is not the purpose of Forms, other sort of Resource (see roadmap) will be used for that.</p>
+<p>Being more RESTfull will be only done on the GET part, in order to use Forms to feed other systems, including that I have in the roadmap</p>
+
+<h2>Forms is written in Stakoverflow-Javascript and Stakoverflow-Rails</h2>
+<p>I have developed this tool in my spare time and although with some knowledge of Ruby and Rails, very little of Javascript</p>
+<p>But... no time to do things right, as I want to know if this fits into a real organization, so if you get to see the source code, you will see a lot to be done, on refactoring and scalability</p>
+<p>You might get to a page which is not formated as nice!! as the others, formatting is not a priority</p>
+
+ 

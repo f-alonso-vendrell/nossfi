@@ -1,0 +1,141 @@
+<h1><%= @action %> forms</h1>
+
+<%= form_tag("/forms_op", :id => 'op_forms', method: "post") do %>
+  <%= hidden_field_tag(:op_form_template,"") %>
+  <%= hidden_field_tag(:op_form_action,"") %>
+  <%= hidden_field_tag(:op_form_data,"") %>
+  <%= submit_tag("Update") %>
+<% end %>
+
+
+<script type="text/javascript">
+
+   document.getElementById('op_forms').style.display = 'none'; 
+
+</script>
+
+<div id="example"></div>
+
+<script type="text/javascript">
+
+
+  
+  var data = [
+  <% @forms.each do |form| %>
+      <% fields = form.getData %>
+      [ 
+        
+        <% fields.each do |field| %>
+           "<%=field%>",
+        <% end %>
+        "<%= form.recipients %>"
+      ],
+    <% end %>
+  ];
+
+var dataTemp = data.slice();
+
+var searchFiled = document.getElementById('search_field');
+
+var container = document.getElementById('example');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: [
+  <% template_fields = @template.getFields %>
+  <% template_fields.each do |field| %>
+           "<%=field[0]%>",
+  <% end %>
+
+
+  "recipients"],
+  columns: [
+      
+      
+      
+      <% template_fields.each do |field| %>
+           {type: "<%=field[3]%>"},
+  <% end %>
+
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  columnSorting: true,
+  search: true,
+  contextMenu: true
+});
+
+
+
+
+
+  function hiddenRowRender(instance, td, row, col, prop, value, cellProperties) {
+    td.style.display = "none";
+}
+
+</script>
+
+<script type="text/javascript">
+
+        function checkAndSet(indata)
+        {
+           if (indata == null)
+           {
+             return "";
+           }
+
+           return indata.replace(/[{}]/g, '');
+
+        }
+
+        function createForms()
+        {
+             console.log("CREATING FORMS");
+
+             var data = hot.getData();
+
+             var fields="";
+             
+             for(var i=0;i<data.length;i++)
+             {
+             	var tmp_form=data[i];
+
+             	fields=fields+"{{"
+
+                for (var j=0;j< tmp_form.length;j++)
+                {  
+                  if (data[i][j] != null)
+                  {
+                     data[i][j] = checkAndSet(data[i][j].toString());
+                  }
+                  else
+                  {
+                     data[i][j] = "";
+                  }
+
+                  fields=fields+data[i][j]+"}{";
+                }
+
+                fields=fields.slice(0,-1);
+                fields=fields+"}";
+                
+             }
+
+             document.getElementById('op_form_template').value="<%= @template.id %>"
+             document.getElementById('op_form_action').value="<%= @action %>"
+
+             document.getElementById('op_form_data').value=fields;
+             document.getElementById('op_forms').submit();
+
+        }
+
+        
+</script>
+
+
+<br>
+
+<input id="clickMe" type="button" value="<%= @action %>" onclick="createForms();" />
+
+<br>
+
+<%= link_to 'Back', forms_path %>

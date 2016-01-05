@@ -1,0 +1,207 @@
+
+
+
+<script type="text/javascript">
+
+var data = [[<%= @form.template_id %>,"<%= @form.template.title %>" ,"<%= current_user.email %>"]];
+var initialized_row = function(index) {
+                        if (handsontable != undefined) {
+                            var data = hot.getData();
+                            data[index - 1] = ["","",""];
+                        }
+                    };
+var container = document.getElementById('template');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: ["Template ID", "Template Title", "Creator"],
+  columns: [
+      {type: "numeric",readOnly: true},
+      {type: "text",readOnly: true},
+      {type: "text",readOnly: true}
+    ],
+  rowHeaders: false,
+  minSpareRows: 0,
+  search: true,
+  contextMenu: true
+});
+
+hot.addHook('afterCreateRow',function(index,ammount) {
+
+            // show some info
+            console.log(index);
+            console.log(ammount);
+
+             var data = hot.getData();
+                     data[index-1][3]= "false";
+                     //hot.loadData(data);
+                     //hot.render();
+                        
+                    });
+
+</script>
+
+<script type="text/javascript">
+
+var data2 = [[]];
+
+var fieldsArray = [
+  <% @fields.each do |field| %>
+  "<%= field.first %>",
+  <% end %>
+  "Notification emails"
+  ];
+
+
+
+var container = document.getElementById('formdata');
+var hot2 = new Handsontable(container, {
+  data: data2,
+  colHeaders: fieldsArray,
+  columns: [
+  <% @fields.each do |field| %>
+      {type: "<%=field[3]%>"
+      <% if field[3]=="dropdown" %>
+         ,source: [
+         <% options = field[4].split(';') %>
+         <% options.each do |option| %>
+            '<%= option %>',
+         <% end %>
+         ]
+
+      <%end%>
+
+
+      },
+  <% end %>
+       {type: "text"}
+    ],
+  rowHeaders: false,
+  minSpareRows: 1,
+  search: true,
+  contextMenu: true
+});
+
+hot2.addHook('afterCreateRow',function(index,ammount) {
+
+    // show some info
+    console.log("after create row");
+    console.log(index);
+    console.log(ammount);
+
+     var data2 = hot2.getData();
+     var count=0;
+     <% @fields.each do |field| %>
+        <% if field[3] == "checkbox" %>
+             data2[index-1][count]= "false";
+        <%end%>
+        count++;
+     <%end%>
+
+     field_lenght=<%=@fields.length%>;
+
+     data2[index-1][field_lenght]="<%= @form.template.defaultemail%>";
+     console.log(data2[index-1][field_lenght]);
+     console.log("<%= @form.template.defaultemail%>");
+
+    // hot2.loadData(data2);
+    // hot2.render();
+                     
+                        
+});
+
+
+</script>
+
+
+
+<script>
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      
+
+      // Only process image files.
+      if (!f.type.match('text/csv')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+
+      
+        output.push(theFile.result);
+        return function(e) {
+
+          // convert into 2D Array
+          //data2 = templateParser(e.target.result);
+          data3 = formParser(fieldsArray,e.target.result)
+
+          console.log(data3);
+
+          for(i=0;i<data3.length;i++)
+          {
+            console.log("READING..."+data3[i]+" "+data3[i].length);
+             for(j=0;j<data3[i].length;j++)
+             {
+               console.log("READ"+i+","+j+" "+data3[i][j]);
+             }
+          }
+
+          hot2.loadData(data3);
+          hot2.render();
+
+
+          console.log(e.target.result);
+          
+         
+        };
+      })(f);
+
+      reader.readAsText(f);
+
+    }
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+
+<%= render 'javascripts_common' %> 
+
+<script>
+
+        function submit()
+        {
+             console.log("SUBMITTING FORMS");
+
+             data2 = hot2.getData();
+
+             data2.pop();
+
+             var fields = jsonify(fieldsArray,data2);
+
+             console.log(fields);
+
+             console.log("jsonify ended");
+
+             
+             var comdata = hot.getData();
+ 
+
+            document.getElementById('form_template_id').value="<%= @form.template_id %>";
+            document.getElementById('form_creator').value="<%= current_user.id %>";
+            //document.getElementById('form_recipients').value=comdata[0][4];
+            //document.getElementById('form_private').value=comdata[0][3].toString();
+            document.getElementById('form_private').value="false";
+            document.getElementById('form_data').value=fields;
+            document.forms[0].submit();
+
+        }
+
+        
+</script>

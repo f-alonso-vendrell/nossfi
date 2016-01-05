@@ -1,0 +1,44 @@
+<%= form_for(@template) do |f| %>
+  
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :desc %><br>
+    <%= f.text_field :desc %>
+  </div>
+  <div class="field">
+    <%= f.label :creator %><br>
+    <%= f.text_field :creator %>
+  </div>
+  <div class="field">
+    <%= f.label :version %><br>
+    <%= f.number_field :templateVersion %>
+  </div>
+  <div class="field">
+    <%= f.label :fields %><br>
+    <%= f.text_field :fields %>
+  </div>
+  <div class="field">
+    <%= f.label :aprovable %><br>
+    <%= f.text_field :aprovable %>
+  </div>
+  <div class="field">
+    <%= f.label :acknowledgeable %><br>
+    <%= f.text_field :acknowledgeable %>
+  </div>
+  <div class="field">
+    <%= f.label :defaultemail %><br>
+    <%= f.text_field :defaultemail %>
+  </div>
+  <div class="field">
+    <%= f.label :parent %><br>
+    <%= f.text_field :parent %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

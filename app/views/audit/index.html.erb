@@ -1,0 +1,27 @@
+<h1>Listing audits</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>User</th>
+      <th>Action</th>
+	    <th>Data</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @audits.each do |audit| %>
+      <tr>
+        <td><%= audit.created_at %></td>
+        <td><%= User.find(audit.user_id).email %></td>
+        <td><%= audit.action %></td>
+        <td><%= audit.audited_changes %></td>
+        <td><%= audit.comment %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

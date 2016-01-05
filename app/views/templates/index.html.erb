@@ -1,0 +1,196 @@
+
+
+<h1>Listing templates</h1>
+
+
+
+<% if ( ! @template.nil? ) && @template.errors.any? %>
+    
+    <div id="error_explanation">
+      <h2><%= pluralize(@template.errors.count, "error") %> error on action over template:</h2>
+
+      <ul>
+      <% @template.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<input id="search_field" placeholder="Search" type="search"/>
+<input id="filter" type="checkbox" value="FilterTemplates" onclick="filterTemplates();" /> See only last version
+<br/><br/>
+
+<div id="example"></div>
+
+
+
+<script type="text/javascript">
+
+
+  
+  var data = [
+  <% @templates.each do |template| %>
+      [
+        '<%= link_to template.title,  forms_path(:template_id => template.id,:related_to_me =>"t") %>',
+        "<%= template.desc %>",
+        <%= template.templateVersion %>,
+        <% if template.creator.nil? %>
+        "NULL",
+        <% else %>
+        "<%= User.find(template.creator).email %>",
+        <% end %>
+        "<%= template.fields %>",
+        "<%= template.defaultemail %>",
+        <% if template.isUsed %>
+        'Used'
+        <% else %>
+         '<%= link_to 'Destroy', template, method: :delete, data: { confirm: 'Are you sure?' } %>'
+        <% end %> 
+      ],
+    <% end %>
+];
+
+var dataTemp = data.slice();
+
+var searchFiled = document.getElementById('search_field');
+
+var container = document.getElementById('example');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: ["Title", "Desc", "Version", "Last Author", "Fields","Defaultemail","Action"],
+  columns: [
+      {renderer: "html"},
+      {type: "text"},
+      {type: "numeric"},
+      {type: "text"},
+      {type: "text"},
+      {type: "text"},
+      {renderer: "html"}
+    ],
+  rowHeaders: false,
+  columnSorting: true,
+  search: true,
+  contextMenu: true
+});
+
+function onlyExactMatch(queryStr, value) {
+    return queryStr.toString() === value.toString();
+  }
+
+  Handsontable.Dom.addEvent(searchFiled, 'keyup', function (event) {
+    var queryResult = hot.search.query(this.value);
+
+    
+
+    if (this.value != "")
+    {
+      var curdata = hot.getData();
+
+      
+      for (i = data.length -1 ; i >=0  ; i--) {
+
+        console.log(i);
+
+        found = 0;
+
+        for (j=0;j<queryResult.length;j++)
+        {
+            if ( queryResult[j].row == i ) {
+
+              found = 1;
+              console.log("FOUND");
+              //data.push(dataTemp[i].slice());
+              j=queryResult.length;
+            }
+        }
+
+        if ( found == 0 )
+        {
+          console.log("NOT FOUND");
+
+          //hot.alter("remove_row",i,1);
+
+          data.splice(i,1);
+          //hot.spliceRow(i,0,7);
+
+
+
+        }
+
+      }
+    }
+    else
+    {
+      console.log("set back");
+      data=dataTemp.slice();
+      hot.loadData(data);
+    }
+
+    console.log(queryResult);
+    hot.render();
+  });
+
+  function hiddenRowRender(instance, td, row, col, prop, value, cellProperties) {
+    td.style.display = "none";
+}
+
+</script>
+<script type="text/javascript">
+
+        
+
+        function filterTemplates()
+        {
+             console.log("filter templates");
+
+             if (document.getElementById('filter').checked)
+             {
+
+               data = [
+                <% @templates.each do |template| %>
+                    <% if template.isLastVersion %>
+                      [
+                        '<%= link_to template.title, template  %>',
+                        "<%= template.desc %>",
+                        <%= template.templateVersion %>,
+                        "<%= template.fields %>",
+                        "<%= template.defaultemail %>",
+                        '<%= link_to 'Destroy', template, method: :delete, data: { confirm: 'Are you sure?' } %>'
+                      ],
+                      <% end %>
+                  <% end %>
+              ];
+            }
+            else
+            {
+               data = [
+              <% @templates.each do |template| %>
+                    
+                      [
+                        '<%= link_to template.title, template  %>',
+                        "<%= template.desc %>",
+                        <%= template.templateVersion %>,
+                        "<%= template.fields %>",
+                        "<%= template.defaultemail %>",
+                        '<%= link_to 'Destroy', template, method: :delete, data: { confirm: 'Are you sure?' } %>'
+                      ],
+                     
+                  <% end %>
+              ];
+            }
+
+            hot.loadData(data);
+             hot.render();
+
+        }
+
+        
+</script>
+
+<br/>
+<br/>
+
+<%= form_tag("/templates/new", method: "get") do %>
+  <%= submit_tag("New Template") %>
+<% end %>

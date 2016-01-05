@@ -1,0 +1,31 @@
+<h1>Editing form</h1>
+
+<%= form_tag("/forms_update", :id => 'update_forms', method: "post") do %>
+  <%= hidden_field_tag(:update_form_data,"") %>
+  <%= submit_tag("Update") %>
+<% end %>
+
+Forms for Template <%= @template.id %><br>
+
+
+
+<script type="text/javascript">
+
+   document.getElementById('update_forms').style.display = 'none'; 
+
+</script>
+
+<div id="example"></div>
+
+<%= render 'javascripts_edit' %>
+<br>
+
+<input id="clickMe" type="button" value="Update Forms" onclick="UpdateForms();" />
+
+<br><br>
+
+<%= form_tag("/forms", method: "get") do %>
+  <%= hidden_field_tag(:template_id, @template.id) %>
+  <%= submit_tag("Cancel") %>
+<% end %>
+

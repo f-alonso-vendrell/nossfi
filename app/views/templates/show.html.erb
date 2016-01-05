@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Template Details</h1>
+
+
+<div id="template"></div>
+
+
+
+<h2>Form Fields</h2>
+
+
+
+<div id="example"></div>
+
+<%= render 'javascripts' %>
+
+<script type="text/javascript">
+
+   data = [["<%= @template.title %>","<%= @template.desc %>",
+     <% if @template.creator.nil? %>
+        "NULL",
+     <% else %>
+     "<%= User.find(@template.creator).email %>",
+     <% end %>
+
+     "<%= @template.defaultemail %>"]];
+   hot.loadData(data);
+   hot.render();
+   console.log("about to load template fields");
+
+   //data2 = templateParserTr("<%= @template.getFieldsAsCsv %>");
+   data2 = <%= @template.getFieldsAsJavascriptArray.html_safe %>;
+   console.log("loaded template fields");
+   console.log(data2);
+   hot2.loadData(data2);
+   hot2.render();
+
+</script>
+
+
+<hr>
+<h2> Form Operations based on this Template</h2>
+
+<% if @template.isLastVersion %>
+  <%= form_tag("/forms", method: "get") do %>
+    <%= hidden_field_tag(:template_id, @template.id) %>
+    <%= submit_tag("Fill Form from template") %>
+  <% end %>
+<% end %>
+
+<%= form_tag("/forms", method: "get") do %>
+  <%= hidden_field_tag(:template_id, @template.id) %>
+  <%= hidden_field_tag(:related_to_me, "t") %>
+  <%= submit_tag("Show Forms based on this template") %>
+<% end %>
+
+<hr>
+<h2> Template Operations</h2>
+
+<% if @template.isLastVersion %>
+  <%= form_tag("/templates/new", method: "get") do %>
+    <%= hidden_field_tag(:parent_id, @template.id) %>
+    <%= submit_tag("Create New Version of Template") %>
+  <% end %>
+<% end %>
+
+<%= form_tag("/templates/new", method: "get") do %>
+  <%= hidden_field_tag(:template_id, @template.id) %>
+  <%= submit_tag("New Template based on this one") %>
+<% end %>
+
+<% if ! @template.isUsed && @template.isLastVersion %>
+  <%= form_tag(edit_template_path(@template), method: "get") do %>
+    <%= hidden_field_tag(:template_id, @template.id) %>
+    <%= submit_tag("Edit template") %>
+  <% end %>
+<% end %>
+
+

@@ -1,0 +1,40 @@
+<h1>New forms</h1>
+
+
+
+<%= render 'form' %>
+
+<script type="text/javascript">
+
+   document.getElementById('new_form').style.display = 'none'; 
+
+</script>
+
+<div id="template"></div>
+
+
+<h2>Form Data (multiples can be submitted at once)</h2>
+
+(Optional) Select csv file to load data: <input type="file" id="files" name="files[]" />
+<br/>
+<output id="list"></output>
+<br/>
+
+<div id="formdata"></div>
+
+
+<%= render 'javascripts_new' %>
+
+
+
+<br/>
+
+<input id="clickMe" type="button" value="Submit Forms" onclick="submit();" />
+
+<br/><br>
+
+
+<%= form_tag("/forms", method: "get") do %>
+  <%= hidden_field_tag(:template_id, @form.template.id) %>
+  <%= submit_tag("Cancel") %>
+<% end %>

@@ -1,0 +1,126 @@
+
+Col to hide <select id="add"></select> <!-- <input id="add" type="int"> -->
+
+<!-- <%= fbookupload %> -->
+
+Col to show <select id="show"></select>   <!--input id="show" type="int"-->
+
+<% template_fields = @template.getFields %>
+
+<script type="text/javascript">
+
+  var colsToHide = [];
+
+
+  function fillDropDown(iddropdown)
+  {
+
+
+  var fragmentShow = document.createDocumentFragment();
+  var opt;
+
+  <% index=0 %>
+
+    opt = document.createElement('option');
+    opt.innerHTML = "Action";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+
+  <% index=index+1 %>
+
+  <% template_fields.each do |field| %>
+            
+    opt = document.createElement('option');
+    opt.innerHTML = "<%=field[0]%>";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+    <% index=index+1 %>
+
+  <%end%>
+
+  opt = document.createElement('option');
+    opt.innerHTML = "ID";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+
+  <% index=index+1 %>
+
+  opt = document.createElement('option');
+    opt.innerHTML = "last Modification";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+
+  <% index=index+1 %>
+
+  opt = document.createElement('option');
+    opt.innerHTML = "last author";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+
+  <% index=index+1 %>
+
+  opt = document.createElement('option');
+    opt.innerHTML = "recipients";
+    opt.value = <%= index %>;
+    fragmentShow.appendChild(opt);
+
+  var selShow = document.getElementById(iddropdown);
+  selShow.appendChild(fragmentShow);
+
+  return selShow;
+
+  }
+
+  fillDropDown('show');
+  fillDropDown('add');
+
+
+  
+
+  $("#add").on("change", function(e) {
+        var val = this.value;
+        this.value = "";
+        var intVal = parseInt(val);
+        if (intVal >= 0) {
+            if (colsToHide.indexOf(intVal) === -1) {
+                colsToHide.push(intVal);
+            }
+        }
+        updateSettings();
+
+    })
+
+    $("#show").on("change", function(e) {
+        var val = this.value;
+        this.value = "";
+        var intVal = parseInt(val);
+        if (intVal >= 0) {
+            var indexToRemove = colsToHide.indexOf(intVal);
+            if (~indexToRemove) {
+                colsToHide.splice(indexToRemove, 1);
+            }
+        }
+        updateSettings();
+    })
+
+  
+
+  function updateSettings() {
+        var newCols = [];
+        var newHeaders = [];
+
+        for (var i = 0; i < globalColumns.length; i++) {
+            if (colsToHide.indexOf(i) === -1) {
+                console.log("Pushing"+i);
+
+                newCols.push(globalColumns[i]);
+                newHeaders.push(colFields[i]);
+            }
+        }
+        hot.updateSettings({
+            columns: newCols,
+            colHeaders: newHeaders
+        });
+    };
+
+</script>

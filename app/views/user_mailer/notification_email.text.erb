@@ -1,0 +1,24 @@
+
+Hello,
+
+   <% if @act == "created" %>
+      You are being notified of the creation of Form:
+
+       <%= form_url(@form) %>
+
+   <% elsif @act == "updated" %>
+      You are being notified of the modification of Form:
+
+       <%= form_url(@form) %>
+
+   <% elsif @act == "deleted" %>
+      You are being notified of the deletion of Form: <%= @id %>
+      
+   <% end %>
+
+  
+
+   Best Regards,
+
+      Forms Tool.
+

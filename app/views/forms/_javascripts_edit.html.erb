@@ -1,0 +1,112 @@
+
+<script type="text/javascript">
+
+  <% template_fields = @template.getFields %>
+
+  
+  var data = [
+  <% @forms.each do |form| %>
+      <% formdata = form.getData %>
+      [ "<%= form.id  %>",
+        
+        <% template_fields.each do |field| %>
+           "<%=formdata[field[0]]%>",
+        <% end %>
+        "<%= form.recipients %>"
+      ],
+    <% end %>
+  ];
+
+  var fieldsArray = ["ID", 
+  <% template_fields.each do |field| %>
+           "<%=field[0]%>",
+  <% end %>
+
+
+  "recipients"];
+
+
+var container = document.getElementById('example');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: fieldsArray,
+  columns: [
+      
+      {type: "numeric"},
+      
+      
+      <% template_fields.each do |field| %>
+           {type: "<%=field[3]%>"},
+  <% end %>
+
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  columnSorting: true,
+  search: true,
+  contextMenu: true
+});
+
+
+</script>
+
+<%= render 'javascripts_common' %> 
+
+<script type="text/javascript">
+
+        function checkAndSet(indata)
+        {
+           if (indata == null)
+           {
+             return "";
+           }
+
+           return indata.replace(/[{}]/g, '');
+
+        }
+
+        function UpdateForms()
+        {
+             console.log("UPDATING FORMS");
+
+             var data = hot.getData();
+
+             var fields = jsonify(fieldsArray,data);
+
+             console.log(fields);
+
+             console.log("jsonify ended");
+             
+             /*for(var i=0;i<data.length;i++)
+             {
+             	var tmp_form=data[i];
+
+             	fields=fields+"{{"
+
+                for (var j=0;j< tmp_form.length;j++)
+                {  
+                  if (data[i][j] != null)
+                  {
+                     data[i][j] = checkAndSet(data[i][j].toString());
+                  }
+                  else
+                  {
+                     data[i][j] = "";
+                  }
+
+                  fields=fields+data[i][j]+"}{";
+                }
+
+                fields=fields.slice(0,-1);
+                fields=fields+"}";
+                
+             }*/
+
+             document.getElementById('update_form_data').value=fields;
+             document.getElementById('update_forms').submit();
+
+        }
+
+        
+</script>
+

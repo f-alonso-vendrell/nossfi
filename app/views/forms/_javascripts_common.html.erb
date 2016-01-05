@@ -1,0 +1,79 @@
+
+<script type="text/javascript">
+
+		function exportAsCSV(headers,data)
+		{
+			var csvContent = "data:text/csv;charset=utf-8,";
+
+			csvContent += headers.join(",");
+			
+			csvContent += "\n";
+
+			for (var i=0;i<data.length;i++)
+			{
+				csvContent += data[i].join(",");
+				if (i < data.length-1)
+				{
+					csvContent += "\n";
+				}
+			}
+
+			window.open(encodeURI(csvContent));
+
+		}
+
+        function checkAndSet(indata)
+        {
+           if (indata == null)
+           {
+             return "";
+           }
+
+           return indata.replace(/[{}"]/g, '');
+
+        }
+
+        function jsonify(fieldsIn,dataIn)
+        {
+           var fields="[";
+           field_lenght=fieldsIn.length;
+
+           console.log("jsonify lenght"+field_lenght);
+           console.log("jsonify data length"+dataIn.length)
+
+           for(var i=0;i<dataIn.length;i++)
+           {
+              for (var j=0;j< field_lenght;j++)
+              {  
+                if (dataIn[i][j] != null)
+                {
+                   dataIn[i][j] = checkAndSet(dataIn[i][j].toString());
+                }
+                else
+                {
+                   dataIn[i][j] = "";
+                }
+              }
+
+              fields=fields+"{"
+              for (var j=0;j< field_lenght-1;j++)
+              { 
+                fields=fields+'"'+fieldsIn[j]+'":"'+dataIn[i][j]+'",';
+              }
+              fields=fields+'"'+fieldsIn[field_lenght-1]+'":"'+dataIn[i][field_lenght-1];
+              if (i<dataIn.length-1)
+              {
+                fields=fields+'"},';
+              }
+              else
+              {
+                fields=fields+'"}';
+              }
+              
+           }
+           fields=fields+"]";
+
+           return fields;
+        }
+
+</script>        
