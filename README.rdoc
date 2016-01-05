@@ -2,6 +2,12 @@
 
 ==A sort of Wiki for Structured Information 
 
+Why? Because Spread Sheets are great...
+... as long as you do not use them in a large group of people (What version do you have? What changed respect previous version? The starting data? The operations? Who changed what? Who reviewed? How is it supposed to be used now?...)
+... as long as you assume you are seeing all the information ( Did you check data on XY999999? Did you check that all sums cover all range they should?...)
+
+{<img src="https://raw.githubusercontent.com/f-alonso-vendrell/nossfi/master/moneylost.png">}[http://google.com]
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
