@@ -24,10 +24,37 @@ So a Nossfi decouples a little all that is great in a spread sheet and provides 
 
 {<img src="https://raw.githubusercontent.com/f-alonso-vendrell/nossfi/master/Structure.png">}[https://github.com/f-alonso-vendrell/nossfi]
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+==Nossfi resources
 
-Things you may want to cover:
+=== Templates
+
+Templates define the structures that can be filled up (think of table schema, or fields definition for a form you want your employees to fill...). The list of them are the landing page of a nossfi, in this version on /templates
+
+* Name and Version
+
+* Author
+
+* Description, what is this for?
+
+* Fields (numeric, text, date, list, check, link, reference)
+
+* Field description, what is this for?
+
+* Field example
+
+=== Forms
+
+Forms contain the "fresh" data as defined in one of the templates, thus data that can not be derived from other data this nossfi. Since forms are created from a template requesting them as a list is done by /forms?template_id=<template_id> usually linked from /templates
+
+===  Filters
+
+Filters contain the operations to be done on the forms (like =A5+B2, but istead total_income=financial_income+non_financial_income). Filters can be listed at /filters currently a filter is looselly tied to a single template, and can be written as a condition in Ruby.
+
+===  Reports
+
+Reports are based on Forms and Filters present data in a predefined format. Their implementation should rely on mature filters (yet to be outlined), currently they can only be done as ad-hoc javascript rendered.
+
+== Pending things to doc:
 
 * Ruby version
 
