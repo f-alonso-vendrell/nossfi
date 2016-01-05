@@ -1,4 +1,6 @@
-== README
+= NOSSFI - No Spread Sheet File
+
+ ==A sort of Wiki for Structured Information 
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
