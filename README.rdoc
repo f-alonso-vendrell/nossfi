@@ -81,7 +81,9 @@ Configure your database as needed. Follow any of the docs to use other databases
 This implementation uses mailcatcher, if you plan to use a real database server configure in your <environment>.rb 
 
 config.action_mailer.default_url_options
+
 config.action_mailer.delivery_method 
+
 config.action_mailer.smtp_settings
 
 Also it is recommended to use SSL in doing so change
@@ -91,7 +93,8 @@ config.force_ssl = true
 Change the admin email (currently no special privilege except being able to see /admin) and the regexp of allowed users
 
 config.admin_email = 'admin@your domain'
-config.loginval = '[a-zA-Z][a-zA-Z0-9\.\_]+@your domain'
+
+config.loginval = 'a email regexp to match your nossfi domain'
 
 == Pending things to doc:
 
