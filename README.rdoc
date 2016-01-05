@@ -54,17 +54,50 @@ Filters contain the operations to be done on the forms (like =A5+B2, but istead 
 
 Reports are based on Forms and Filters present data in a predefined format. Their implementation should rely on mature filters (yet to be outlined), currently they can only be done as ad-hoc javascript rendered.
 
+== A NOSSFI as a Self Contained System
+
+=== Authentication
+
+A Nossfi should provide means for authentication or its delegation. Based on Devise or Omniauth it can cover mechanisms requested. This implementation uses a modified Devise to SFA based on link emailed to user, thus it authenticates withouth having need for passwords
+
+=== Authorization
+
+A Nossfi should provide means for authorization or its delegation in other systems. This implementation treats all users (except admin) the same that is all users within and organization (email domain) have the same level of privileges
+
+=== Accounting
+
+A Nossfi should provide means for individual accountin of activities. This implementation logs any Form and Template operation and provides no personalization (although the framework is under study)
+
+=== Notifications
+
+A Nossfi should provide means for individual subscription and its configuration. An initial attempt is done via forced subscription email in a totally non-scallable manner, and it is to be dropped as it is too distracting. If you use this implementation do not use "recipients".
+
+== This NOSSFI Implementation
+
+=== Configuration
+
+Configure your database as needed. Follow any of the docs to use other databases. Follo docs on how to execute the migrations to set up the database.
+
+This implementation uses mailcatcher, if you plan to use a real database server configure in your <environment>.rb 
+
+config.action_mailer.default_url_options
+config.action_mailer.delivery_method 
+config.action_mailer.smtp_settings
+
+Also it is recommended to use SSL in doing so change
+
+config.force_ssl = true
+
+Change the admin email (currently no special privilege except being able to see /admin) and the regexp of allowed users
+
+config.admin_email = 'admin@your domain'
+config.loginval = '[a-zA-Z][a-zA-Z0-9\.\_]+@your domain'
+
 == Pending things to doc:
 
 * Ruby version
 
 * System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
 
 * How to run the test suite
 
