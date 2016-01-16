@@ -1,11 +1,11 @@
 
-<% if ! @related_to_me.nil? and @related_to_me %>
+<% if ! current_user.nil? and ! @related_to_me.nil? and @related_to_me %>
 
    <p> Filtered by user <%= current_user.email %>, you can remove it by removing parameter "related_to_me=t" </p>
 
 <% else %>
 
-   <p> Not filtered by a particular user, You can add by adding parameter "related_to_me=t" </p>
+   <p> Not filtered by a particular user, You can add by log-in adding parameter "related_to_me=t" </p>
   
 <% end %>
 

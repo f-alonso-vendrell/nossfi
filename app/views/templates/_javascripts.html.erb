@@ -114,6 +114,7 @@ var hot2 = new Handsontable(container, {
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
 </script>
 
+<% if ! current_user.nil? %>
  <script type="text/javascript">
 
         function checkAndSet(indata)
@@ -165,3 +166,4 @@ var hot2 = new Handsontable(container, {
 
         
 </script>
+<% end %>

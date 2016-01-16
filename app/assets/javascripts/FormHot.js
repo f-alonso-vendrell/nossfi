@@ -30,7 +30,7 @@ function setupHot(mycontainer,mydata)
       return;
     }
 
-    for (i=0;i<changes.length;i++)
+    for (var i=0;i<changes.length;i++)
     {
       if (!( (changes[i][1]=="Action")&&(changes[i][3])))
       {

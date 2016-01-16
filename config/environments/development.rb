@@ -40,5 +40,7 @@ Forms::Application.configure do
   config.admin_email = 'admin@nossfi.org'
 
   config.loginval = '[a-zA-Z][a-zA-Z0-9\.\_]+@nossfi.org'
+
+  config.allow_read_unauthenticated = true
   
 end

@@ -5,17 +5,17 @@
 
      var a = new Array(raw_array.length-1);
 
-     for (i=0;i<raw_array.length-1;i++)
+     for (var i=0;i<raw_array.length-1;i++)
      {
          a[i]=new Array(headers.length);
 
-         for(j=0;j<headers.length;j++)
+         for(var j=0;j<headers.length;j++)
          {
              a[i][j]="";
          }
      }
 
-     for (i = 0; i < raw_array[0].length; i++)
+     for (var i = 0; i < raw_array[0].length; i++)
      {
         console.log("Trying "+raw_array[0][i]);
         for (var j = 0; j< headers.length; j++)
@@ -23,7 +23,7 @@
            console.log("Checking "+headers[j]);
            if ( raw_array[0][i]==headers[j] )
            {
-               for(k=1;k<raw_array.length;k++)
+               for(var k=1;k<raw_array.length;k++)
                {
                    console.log("Setting: "+raw_array[k][i]+ " at "+(k-1)+","+j);
                    a[k-1][j]=raw_array[k][i];

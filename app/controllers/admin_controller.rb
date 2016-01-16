@@ -41,6 +41,12 @@ class AdminController < ApplicationController
 
       # end
 
+      if current_user.nil?
+
+        redirect_to "/"
+
+      end
+
       if (current_user.email != Rails.configuration.admin_email)
 
         logger.info "CURRENT USER IS: "+current_user.email

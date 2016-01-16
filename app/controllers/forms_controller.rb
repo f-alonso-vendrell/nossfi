@@ -487,7 +487,15 @@ class FormsController < ApplicationController
 
       end
 
-      code_tmp = code_tmp.gsub("myself",current_user.id.to_s)
+      if ! current_user.nil?
+
+        code_tmp = code_tmp.gsub("myself",current_user.id.to_s)
+
+      else
+
+        code_tmp = "result=true"
+
+      end
 
       logger.info "FILTER NOW IS"+code_tmp
 
