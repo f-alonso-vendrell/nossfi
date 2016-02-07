@@ -38,19 +38,6 @@ class FormsController < ApplicationController
 
       if ! @template.nil?
 
-        #if @related_to_me
-
-         # @forms = Form.where("template_id = ? and updated_at >= ? and ( data like ? or creator = ? )",@template.id,
-          #                    Date.today-@duration,
-           #                   "%"+current_user.email+"%",
-            #                  current_user.id)
-
-        # else
-
-          # @forms = Form.where("template_id = ? and updated_at >= ?",@template.id,Date.today-@duration)
-
-         #end
-
          @filters= Filter.where("template = ?",params["template_id"])
 
          if ! params["filter"].nil?
@@ -71,53 +58,19 @@ class FormsController < ApplicationController
 
         else
 
+          logger.info "GRAMMAR: " + @cur_filter.getVarsGrammar
+
           forms_tmp = Form.where("template_id = ?",@template.id)
 
           code=@cur_filter.code
           form_json=forms_tmp.first.as_json
           logger.info "DATA AS JSON: "+form_json.keys.to_s
-          form_data_json = ActiveSupport::JSON.decode(form_json["data"])
-          logger.info "DATA AS JSON: "+form_data_json.keys.to_s
-          prepared_code = prepare_filter_code(code,form_json,form_data_json)
           
-
           forms_tmp.each do |form|
 
-            
+            form_data_json = ActiveSupport::JSON.decode(form.as_json["data"])
 
-            result=false
-            result.taint
-
-
-
-            th = Thread.new {
-
-              form_json=form.as_json
-              form_json.taint
-
-
-              
-
-              form_data_json = ActiveSupport::JSON.decode(form_json["data"])
-              form_data_json.taint
-
-              
-
-
-
-
-              $SAFE = 4
-
-              
-
-              
-
-              eval(prepared_code)
-
-              
-
-            }
-            th.join
+            result = @cur_filter.match(form_data_json)
 
             if result
 
@@ -138,15 +91,6 @@ class FormsController < ApplicationController
           format.html { render action: 'index_simple.html'}
           format.json 
         end
-
-        #if params[:format] == "json"
-
-          # render action: 'index.json' 
-
-        #else
-           
-          
-        #end
 
       end
 
@@ -466,43 +410,7 @@ class FormsController < ApplicationController
       @form = Form.find(params[:id])
     end
 
-    def prepare_filter_code(code,form_json,form_data_json)
-
-      logger.info "DATA AS JSON: "+form_json.keys.to_s
-      logger.info "DATA AS JSON: "+form_data_json.keys.to_s
-
-      code_tmp=code
-
-      form_json.keys.each do |subs|
-
-        code_tmp=code_tmp.gsub("."+subs,"form_json['"+subs+"']") 
-
-      end
-
-      logger.info "FILTER NOW IS"+code_tmp
-
-      form_data_json.keys.each do |subs|
-
-        code_tmp=code_tmp.gsub("."+subs,"form_data_json['"+subs+"']") 
-
-      end
-
-      if ! current_user.nil?
-
-        code_tmp = code_tmp.gsub("myself",current_user.id.to_s)
-
-      else
-
-        code_tmp = "result=true"
-
-      end
-
-      logger.info "FILTER NOW IS"+code_tmp
-
-      return code_tmp
-
-    end
-
+    
     def set_delete_forms
 
       if params[:delete_form_data].nil?

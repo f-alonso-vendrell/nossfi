@@ -11,56 +11,7 @@ class FiltersController < ApplicationController
   # GET /filters/1.json
   def show
 
-    return
-
-    # Calculate result, use specific parser of the form:
-    # TEMPLATE.select(FIELDS).where(CONDITION)
-
-    # output is written as OUTPUT
-
-    @templates = Template.all
-    totresult=""
-    result=false
-
-    @templates.each do |template|
-
-      name = template.name
-      content = template.content
-      created_at = template.created_at
-      updated_at = template.updated_at
-
-      name.taint
-      content.taint
-      created_at.taint
-      updated_at.taint
-
-      @result.taint
-
-      code=@filter.code
-      code.untaint
-
-      th = Thread.new {
-
-      $SAFE = 4
-
-      eval(code)
-
-      totresult=totresult+" "+result.to_s
-
-      }
-      th.join
-
-      
-
-      $SAFE = 0
-
-      #result.untaint
-      #@result=@result+" "+result.to_s
-
-    end
-
-    @result=totresult
-   
+    
 
   end
 

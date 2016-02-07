@@ -1,0 +1,98 @@
+grammar Logic
+
+  include VarTypes
+
+  rule decision
+     binary_decision / unary_decision / comparative_decission
+  end
+
+  rule comparative_decission
+    head:primary
+    tail:(
+      space mi_operator:equality_op
+      space operand:primary)* <BinaryOperation>
+  end
+
+  rule equality_op
+    '==' {
+      def apply(a, b)
+         
+        a == b
+      end
+    }
+  end
+
+  rule primary
+    number_var <NumberVar>
+    /
+    string_var <StringVar>
+    /
+    number    
+    /
+    string
+  end
+
+#  rule variable # sustituido por number_var
+#    "?" [a-z]+ {
+#      def evaluate(env={})
+#        env[name]
+#      end
+#      
+#      def name
+#        text_value
+#      end
+#    }
+#  end
+
+  rule number
+    ([1-9] [0-9]* / '0') {
+      def evaluate(env={})
+        text_value.to_i
+      end
+    }
+  end
+
+  rule string
+    '\'' [a-zA-Z0-9]+ '\'' {
+      def evaluate(env={})
+        text_value[1..-2].to_s
+      end
+    }
+  end
+
+  rule binary_decision
+    operand_1:unary_decision space
+    operator space
+    operand_2:decision <BinaryDecision>
+  end
+
+  rule unary_decision
+    negation / boolean_var <BooleanVar> / parenthesized
+  end
+
+  rule negation
+    space?
+    'not' space operand:unary_decision <Negation>
+  end
+
+ # rule condition ## substitued by boolean_var
+ #   [A-Za-z]+ <Condition>
+ # end
+
+  rule parenthesized
+    '(' space? contents:decision space? ')' <Parenthesized>
+  end
+
+  rule operator
+    'and' <And>
+    /
+    'or' <Or>
+    /
+    'xor' <Xor>
+  end
+
+  rule space
+    [ \t\n\r]+
+  end
+
+end

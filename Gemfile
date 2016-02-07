@@ -53,3 +53,7 @@ gem 'devise'
 
 # Help for auditing
 gem 'audited-activerecord'
+
+# To create SDLs, e.g. for Filters
+gem 'treetop'
+gem 'polyglot'
