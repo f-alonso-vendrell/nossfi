@@ -1,0 +1,76 @@
+grammar StringGrammar
+
+   include VarTypes
+
+   rule string_returning_op
+
+     head:basic_strings method_concatenation tail:method_list <StringOperation>
+     /
+     basic_strings
+
+   end
+
+   rule basic_strings
+
+      basic_string / 
+      basic_string_2 / 
+      string_var <StringVar>
+
+   end
+
+   rule method_concatenation
+
+      "." {
+		      def evaluate(env={})
+		        text_value.to_s
+		      end
+		    }
+
+   end 
+
+   rule method_list
+
+      head:method method_concatenation tail:method_list <MethodListOperation>
+      /
+      method <MethodListOperation2>
+
+
+   end
+
+   rule method
+
+      allowed_methods {
+		      def evaluate(env={})
+		        text_value.to_s
+		      end
+		    }
+
+   end
+
+  
+
+   rule allowed_methods
+
+      "to_s" / "upcase" / "to_i" / "downcase" / "chomp" / "chop" / "chr" / "dump" / "empty?" /
+      "hash" / "hex" / "inspect" / "length" / "lstrip" / "next" / "oct" / "ord" / "reverse" /
+      "rstrip" / "scrub" / "size" / "strip" / "swapcase" / "capitalize" / "to_c" / "to_f" /
+      "to_r" / "valid_encoding?" / 
+      "to_time" / "day" / "mday" / "hour" / "inspect" / "dst?" / "min" / "month" / "nsec" / "sec" / "wday" / "yday" / "year" / "zone" /
+      "monday?" / "tuesday?" / "wednesday?" / "thursday?" / "friday?" / "saturday?" / "sunday?" 
+      
+   end
+
+   rule basic_string
+	  '"' ('\"' / !'"' .)* '"' <BasicString>
+   end
+
+   rule basic_string_2
+	  "'" ( "\\'" /  !"'" .)* "'" <BasicString>
+   end
+
+   rule space
+    [ \t\n\r]+
+   end
+
+
+end

@@ -1,16 +1,28 @@
 <h1>Editing filter</h1>
 
 <%= render 'form' %>
-
-.id<br>
-.template_id<br>
-.creator<br>
-.recipients<br>
-.private<br>
-.created_at<br>
-.updated_at<br>
+<b>
+id (number) <br>
+template_id (number)<br>
+creator (string) <br>
+recipients (string)<br>
+private (boolean)<br>
+created_at (string)<br>
+updated_at (string)<br>
+</b>
 And fields:<br>
-<%= @fields %>
+<b>
+<% @fields.each do |field| %>
+   <%= field %> , 
+<% end %>
+</b><br>
+You can use the following operations:<br>
+<b>"to_s" / "upcase" / "to_i" / "downcase" / "chomp" / "chop" / "chr" / "dump" / "empty?" /
+      "hash" / "hex" / "inspect" / "length" / "lstrip" / "next" / "oct" / "ord" / "reverse" /
+      "rstrip" / "scrub" / "size" / "strip" / "swapcase" / "capitalize" / "to_c" / "to_f" /
+      "to_r" / "valid_encoding?" / 
+      "to_time" / "day" / "mday" / "hour" / "inspect" / "dst?" / "min" / "month" / "nsec" / "sec" / "wday" / "yday" / "year" / "zone" /
+      "monday?" / "tuesday?" / "wednesday?" / "thursday?" / "friday?" / "saturday?" / "sunday?" </b>
 
 <%= link_to 'Show', @filter %> |
 <%= link_to 'Back', filters_path %>

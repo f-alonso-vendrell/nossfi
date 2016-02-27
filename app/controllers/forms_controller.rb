@@ -69,6 +69,11 @@ class FormsController < ApplicationController
           forms_tmp.each do |form|
 
             form_data_json = ActiveSupport::JSON.decode(form.as_json["data"])
+            form_data_json["created_at"]=form.created_at.to_s
+            form_data_json["updated_at"]=form.updated_at.to_s
+            form_data_json["id"]=form.id
+            form_data_json["template_id"]=form.template_id
+            form_data_json["creator"]=form.creator.to_s
 
             result = @cur_filter.match(form_data_json)
 

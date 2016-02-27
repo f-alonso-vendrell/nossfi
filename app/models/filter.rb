@@ -170,6 +170,83 @@ module Xor
 end
 
 
+module BasicString
+
+  def evaluate(env={})
+    text_value[1..-2].to_s
+  end
+    
+end
+
+module StringVar
+
+  def evaluate(env={})
+    env[name]
+  end
+  
+  def name
+    text_value
+  end
+
+end
+
+module StringOperation 
+    
+    def evaluate(env={})
+
+      stack_tmp = Array.new
+      
+      stack_tmp = tail.evaluate(env)
+
+      val = head.evaluate(env)
+
+      stack_tmp.reverse_each do |method|
+
+        if method == "to_time"
+
+          val=Time.parse(val)
+
+        else
+
+          val=val.send(method)
+
+        end
+
+      end
+
+      val
+
+    end
+end
+
+module MethodListOperation 
+    
+    def evaluate(env={})
+
+      stack_tmp = Array.new
+
+      stack_tmp = tail.evaluate(env)
+
+      stack_tmp << head.evaluate(env)
+
+      return stack_tmp
+
+    end
+end
+
+module MethodListOperation2
+    
+    def evaluate(env={})
+
+      stack_tmp = Array.new
+
+      stack_tmp << text_value
+
+      return stack_tmp
+
+    end
+end
+
 class Filter < ActiveRecord::Base
 
    def getVarsGrammar
@@ -228,6 +305,8 @@ class Filter < ActiveRecord::Base
 
     Treetop.load_from_string(getVarsGrammar())
 
+    Treetop.load "app/controllers/string"
+
     Treetop.load "app/controllers/logic"
 
     @parser = LogicParser.new
@@ -235,7 +314,18 @@ class Filter < ActiveRecord::Base
     logger.info "MATCH DATA: "+json_data.to_s
     logger.info "CODE: "+code
 
-    return @parser.parse( code ).evaluate(json_data)
+    result = @parser.parse( code )
+
+    if ! result
+
+       logger.info "PARSER FAILURE REASON: "+ @parser.failure_reason
+       logger.info "PARSER FAILURE LINE: "+ @parser.failure_line.to_s
+       logger.info "PARSER FAILURE COLUMN: "+ @parser.failure_column.to_s
+
+
+    end
+
+    return result.evaluate(json_data)
 
    end
 

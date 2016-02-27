@@ -24,7 +24,7 @@ class FiltersController < ApplicationController
   def edit
     template=Template.find(@filter.template)
 
-    @fields = template.getFieldsNames.join(",");
+    @fields = template.getFieldsNames;
   end
 
   def validateCode

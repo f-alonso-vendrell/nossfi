@@ -1,6 +1,6 @@
 grammar Logic
 
-  include VarTypes
+  include StringGrammar
 
   rule decision
      binary_decision / unary_decision / comparative_decission
@@ -20,42 +20,34 @@ grammar Logic
         a == b
       end
     }
+    /
+    '!=' {
+      def apply(a, b)
+         
+        a != b
+      end
+    }
+    /
+    '<' {
+      def apply(a, b)
+         
+        a < b
+      end
+    }
   end
 
   rule primary
+    string_returning_op
+    /
     number_var <NumberVar>
     /
-    string_var <StringVar>
-    /
-    number    
-    /
-    string
+    number   
   end
-
-#  rule variable # sustituido por number_var
-#    "?" [a-z]+ {
-#      def evaluate(env={})
-#        env[name]
-#      end
-#      
-#      def name
-#        text_value
-#      end
-#    }
-#  end
 
   rule number
     ([1-9] [0-9]* / '0') {
       def evaluate(env={})
         text_value.to_i
-      end
-    }
-  end
-
-  rule string
-    '\'' [a-zA-Z0-9]+ '\'' {
-      def evaluate(env={})
-        text_value[1..-2].to_s
       end
     }
   end
@@ -75,10 +67,6 @@ grammar Logic
     'not' space operand:unary_decision <Negation>
   end
 
- # rule condition ## substitued by boolean_var
- #   [A-Za-z]+ <Condition>
- # end
-
   rule parenthesized
     '(' space? contents:decision space? ')' <Parenthesized>
   end
@@ -89,10 +77,6 @@ grammar Logic
     'or' <Or>
     /
     'xor' <Xor>
-  end
-
-  rule space
-    [ \t\n\r]+
   end
 
 end

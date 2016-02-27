@@ -19,13 +19,16 @@
         <td><%= filter.name %></td>
         <td><%= filter.code %></td>
         <td><%= link_to 'Show', filter %></td>
+        <% if ! current_user.nil? %>
         <td><%= link_to 'Edit', edit_filter_path(filter) %></td>
         <td><%= link_to 'Destroy', filter, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
+<% if ! current_user.nil? %>
 <%= link_to 'New Filter', new_filter_path %>
+<%end%>
