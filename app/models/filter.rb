@@ -253,52 +253,8 @@ class Filter < ActiveRecord::Base
 
       @template = Template.find(template)
 
-      # predefined vars
-
-      @boolean_vars = ["private"]
-      @numeric_vars = ["template_id","creator","id"]
-      @string_vars = ["recipients","created_at","updated_at"]
-
-      # vars from template
-
-      @template.getFields.each do |field|
-
-        if field[3] == "numeric" 
-          
-          @numeric_vars << field[0]
-
-        elsif field[3] == "checkbox"
-
-          @boolean_vars << field[0]
-
-        else 
-
-          @string_vars << field[0]
-
-        end
-
-
-      end
-
-
-      grammar = 'grammar VarTypes
-
-  rule boolean_var
-     "' + @boolean_vars.join('" / "') + '" 
-  end
-
-  rule number_var
-     "' + @numeric_vars.join('" / "') + '" 
-  end
-
-  rule string_var
-     "' + @string_vars.join('" / "') + '" 
-  end
-
-  end'
-
-      return grammar
-
+      return @template.getVarsGrammar()
+   
    end
 
    def match(json_data)

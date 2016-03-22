@@ -1,5 +1,15 @@
 Forms::Application.routes.draw do
+  resources :reports
+
+  delete 'reports' => 'reports#destroy'
+
+  post 'reports_update' => 'reports#update'
+
+  resources :template_reports
+
   resources :filters
+
+  resources :groupers
 
   devise_for :users, :controllers => { :passwords => "passwords", :registrations => "registrations"}
 

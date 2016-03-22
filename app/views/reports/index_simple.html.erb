@@ -1,0 +1,83 @@
+<% content_for :title_data, "-Reports for "+@template.title %>
+
+
+<h1>Listing reports</h1>
+
+Reports based on Template <%= link_to @template.title,  @template  %>
+
+<div id="example"></div>
+
+
+<div hidden>
+<%= form_tag("/forms", :id => 'create_form', method: "post") do %>
+  <%= hidden_field_tag(:create_form_template_id,"") %>
+  <%= hidden_field_tag(:create_form_creator,"") %>
+  <%= hidden_field_tag(:create_form_recipients,"") %>
+  <%= hidden_field_tag(:create_form_private,"") %>
+  <%= hidden_field_tag(:create_form_data,"") %>
+  <%= submit_tag("Create") %>
+<% end %>
+
+<%= form_tag("/reports", :id => 'delete_report', method: "delete") do %>
+  <%= hidden_field_tag(:delete_report_data,"") %>
+  <%= submit_tag("Delete", data: { confirm: 'Are you sure?' }) %>
+<% end %>
+
+<%= form_tag("/reports_update", :id => 'update_reports', method: "post") do %>
+  <%= hidden_field_tag(:update_report_data,"") %>
+  <%= submit_tag("Update") %>
+<% end %>
+</div>
+
+
+<%= render 'javascripts_index' %>
+
+
+<h2>ACTIONS FOR SELECTED REPORTS: </h2>
+
+<input id="clickMe6" type="button" value="Export Selected as CSV" onclick="exportSelected();" />
+
+<% if ! current_user.nil? %>
+<input id="deleteButton" type="button" value="Delete Selected" onclick="deleteSelected('report');" />
+
+
+
+<input id="updateButton" type="button" value="Submit Updated Report" onclick="updateSelected('report');" />
+
+<div id="creation">
+
+  <input id="createButton" type="button" value="Submit New Report" onclick="createForms('<%= @template.id %>','<%= current_user.id %>');" />
+
+</div>
+
+<script type="text/javascript">
+   buttonMngr.setupButtons(); 
+</script>
+
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reports.each do |report| %>
+      <tr>
+        <td><%= report.data %></td>
+        <td><%= link_to 'Show', report %></td>
+        <td><%= link_to 'Edit', edit_report_path(report) %></td>
+        <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Report', new_report_path(:template_report_id => @template.id) %>

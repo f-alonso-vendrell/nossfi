@@ -1,0 +1,42 @@
+grammar StringOps
+
+  include StringGrammar
+
+  rule decision
+     concatenation / primary
+  end
+
+  rule concatenation
+    head:primary
+    tail:(
+      space? mi_operator:concat_op
+      space? operand:primary)* <BinaryOperation>
+  end
+
+  rule concat_op
+    '+' {
+      def apply(a, b)
+         
+        a.to_s + b.to_s
+      end
+    }
+   
+  end
+
+  rule primary
+    string_returning_op
+    /
+    number_var <NumberVar>
+    /
+    number    
+  end
+
+  rule number
+    ([1-9] [0-9]* / '0') {
+      def evaluate(env={})
+        text_value.to_s
+      end
+    }
+  end
+
+end

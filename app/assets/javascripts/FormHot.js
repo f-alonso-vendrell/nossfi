@@ -1,15 +1,15 @@
 var container;
 var hot;
 
-function setupHot(mycontainer,mydata)
+function setupHot(mycontainer,mycolumns,mycolhearders,mydata)
 {
 
 
   //container = document.getElementById('example');
   var myhot = new Handsontable(mycontainer, {
     data: mydata,
-    colHeaders: colFields,
-    columns: globalColumns,
+    colHeaders: mycolhearders,
+    columns: mycolumns,
     rowHeaders: false,
     columnSorting: true,
     search: true,
@@ -86,7 +86,7 @@ function setupHot(mycontainer,mydata)
       {
           if ( viewState == "idle" )
           {
-               viewState = "canDelete";
+               viewState = "canUpdateAndDelete";
           }
       }
     }

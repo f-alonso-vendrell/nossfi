@@ -1,4 +1,4 @@
-
+<% content_for :title_data, "Home" %>
 
 <h1>Listing templates</h1>
 
@@ -43,10 +43,12 @@
         "<%= template.fields %>",
         "<%= template.defaultemail %>",
         <% if template.isUsed %>
-        'Used'
+        'Used',
         <% else %>
-         '<%= link_to 'Destroy', template, method: :delete, data: { confirm: 'Are you sure?' } %>'
+         '<%= link_to 'Destroy', template, method: :delete, data: { confirm: 'Are you sure?' } %>',
         <% end %> 
+        '<%= link_to "filters",  filters_path(:template_id => template.id) %>',
+        '<%= link_to "groupers",  groupers_path(:template_id => template.id) %>'
       ],
     <% end %>
 ];
@@ -58,7 +60,7 @@ var searchFiled = document.getElementById('search_field');
 var container = document.getElementById('example');
 var hot = new Handsontable(container, {
   data: data,
-  colHeaders: ["Title", "Desc", "Version", "Last Author", "Fields","Defaultemail","Action"],
+  colHeaders: ["Title", "Desc", "Version", "Last Author", "Fields","Defaultemail","Action","Filters","Groupers"],
   columns: [
       {renderer: "html"},
       {type: "text"},
@@ -66,6 +68,8 @@ var hot = new Handsontable(container, {
       {type: "text"},
       {type: "text"},
       {type: "text"},
+      {renderer: "html"},
+      {renderer: "html"},
       {renderer: "html"}
     ],
   rowHeaders: false,

@@ -1,0 +1,30 @@
+<h1>New Reports Template</h1>
+
+<%= render 'form' %>
+
+<h2>Report Template</h2>
+
+<div id="templateReport"></div>
+
+<script type="text/javascript">
+
+   document.getElementById('new_template_report').style.display = 'none'; 
+
+</script>
+
+<h2>Report Input Fields (Currently not used until Filters support such)</h2>
+
+<div id="example"></div>
+
+<h2>Report Output Fields</h2>
+
+<div id="outputFields"></div>
+
+<%= render 'javascripts' %>
+
+
+
+<br/>
+<% if ! current_user.nil? %>
+<input id="clickMe" type="button" value="Create Template" onclick="submit();" />
+<% end %>

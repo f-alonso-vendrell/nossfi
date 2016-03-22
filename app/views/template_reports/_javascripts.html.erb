@@ -1,0 +1,270 @@
+
+
+
+<script type="text/javascript">
+
+var data = [["","",""]];
+var initialized_row = function(index) {
+                        if (handsontable != undefined) {
+                            var data = hot.getData();
+                            data[index - 1] = ["","",""];
+                        }
+                    };
+var container = document.getElementById('templateReport');
+var hot = new Handsontable(container, {
+  data: data,
+  colHeaders: ["Title", "Description", "Creator","Default email"],
+  columns: [
+      {type: "text"},
+      {type: "text"},
+      {type: "text"},
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  minSpareRows: 0,
+  search: true,
+  contextMenu: true
+});
+
+/*hot.addHook('afterCreateRow',function(index,ammount) {
+
+            // show some info
+//            console.log(index);
+            console.log(ammount);
+
+             var data = hot.getData();
+                     data[index-1][3]= "false";
+                     data[index-1][4]= "false";
+                     //hot.loadData(data);
+                     //hot.render();
+                        
+                    });
+*/
+
+</script>
+
+<script type="text/javascript">
+
+var data2 = [];
+var container = document.getElementById('example');
+var hot2 = new Handsontable(container, {
+  data: data2,
+  colHeaders: ["Field Name", "Description", "Hint", "Type","Selection data (optional)"],
+  columns: [
+      {type: "text"},
+      {type: "text"},
+      {type: "text"},
+      { type: 'dropdown',
+        source: ['text', 'link', 'numeric', 'date', 'checkbox', 'dropdown','reference']
+      },
+      {type: "text"}
+    ],
+  rowHeaders: false,
+  minSpareRows: 1,
+  search: true,
+  contextMenu: true
+});
+</script>
+
+<script type="text/javascript">
+
+var template_list = [
+        <% @templates.each do |template| %>
+             "<%=template.id%>",
+        <% end %>
+          ];
+
+var filter_list = {};
+<% @templates.each do |template| %>
+filter_list[ "<%=template.id%>" ] = [
+       <% @filters.each do |filter| %>
+          <% if filter.template== template.id %>
+             "<%= filter.id %>",
+          <% end %>
+       <% end %>
+       ""
+    ];
+<% end %>
+
+var grouper_list = {};
+<% @templates.each do |template| %>
+grouper_list[ "<%=template.id%>" ] = [
+       <% @groupers.each do |grouper| %>
+          <% if grouper.template== template.id %>
+             "<%= grouper.id %>",
+          <% end %>
+       <% end %>
+       ""
+    ];
+<% end %>
+
+
+
+var data3 = [];
+var container3 = document.getElementById('outputFields');
+var hot3 = new Handsontable(container3, {
+  data: data3,
+  colHeaders: ["Table", "Filter", "Grouping", "Name"],
+  columns: [
+      { type: 'dropdown',
+        source: template_list
+      },
+      {type: "text",
+        renderer: "html",
+        readOnly: true},
+      {type: "text",
+        readOnly: true},
+      {type: "text",
+        readOnly: true}
+    ],
+  rowHeaders: false,
+  minSpareRows: 1,
+  search: true,
+  contextMenu: true
+});
+
+hot3.updateSettings({
+    cells: function (row, col, prop) {
+      var cellProperties = {};
+
+      if (col==0)
+      {
+        cellProperties.readOnly = false;
+        return;
+      }
+
+      for( var index=0;index<template_list.length;index++)
+      {
+          if ( hot3.getData()[row][0] == template_list[index] )
+          {
+            if ( col == 1 )
+            {
+              this.type = 'dropdown';
+
+              this.source = [];
+
+              this.source = filter_list[template_list[index]];
+
+              //this.source.push(' <a href="http://www.w3schools.com/html/">Visit our HTML tutorial</a> ');
+            }
+            else if ( col == 2 )
+            {
+              this.type = 'dropdown';
+
+              this.source = [];
+
+              this.source = grouper_list[template_list[index]];
+            }
+            
+
+           
+
+            //this.source.push('<a href="http://kk">');
+            //this.source.push("adios");
+
+          
+
+
+            cellProperties.readOnly = false;
+            return cellProperties;
+          }
+      }
+
+      if (col>0)
+      {
+        cellProperties.readOnly = true;
+      }
+      
+     
+
+      return cellProperties;
+    }
+  })
+
+
+
+
+
+
+
+</script>
+
+
+
+
+<% if ! current_user.nil? %>
+ <script type="text/javascript">
+
+        function checkAndSet(indata)
+        {
+           if (indata == null)
+           {
+             return "";
+           }
+
+           return indata.replace(/[{}]/g, '');
+
+        }
+
+        function fillFieldsFromData(dataIn)
+        {
+           var fields="";
+
+           for(var i=0;i<dataIn.length-1;i++)
+           {
+              dataIn[i][0] = checkAndSet(dataIn[i][0]);
+              dataIn[i][1] = checkAndSet(dataIn[i][1]);
+              dataIn[i][2] = checkAndSet(dataIn[i][2]);
+              dataIn[i][3] = checkAndSet(dataIn[i][3]);
+              dataIn[i][4] = checkAndSet(dataIn[i][4]);
+
+
+            fields=fields+"{{"+dataIn[i][0]+"}{"+
+                               dataIn[i][1]+"}{"+
+                               dataIn[i][2]+"}{"+
+                               dataIn[i][3]+"}{"+
+                               dataIn[i][4]+"}}";
+           }
+
+           return fields;
+        }
+
+        function submit()
+        {
+             console.log(data[0][2].toString());
+
+             // fields="";
+             // for(var i=0;i<data2.length-1;i++)
+             // {
+             //    data2[i][0] = checkAndSet(data2[i][0]);
+             //    data2[i][1] = checkAndSet(data2[i][1]);
+             //    data2[i][2] = checkAndSet(data2[i][2]);
+             //    data2[i][3] = checkAndSet(data2[i][3]);
+             //    data2[i][4] = checkAndSet(data2[i][4]);
+
+
+             //  fields=fields+"{{"+data2[i][0]+"}{"+
+             //                     data2[i][1]+"}{"+
+             //                     data2[i][2]+"}{"+
+             //                     data2[i][3]+"}{"+
+             //                     data2[i][4]+"}}";
+             // }
+
+             var fields = fillFieldsFromData(data2);
+             var results = fillFieldsFromData(data3);
+ 
+
+            document.getElementById('template_report_title').value=data[0][0];
+            document.getElementById('template_report_desc').value=data[0][1];
+            document.getElementById('template_report_creator').value="<%= current_user.id %>";
+            document.getElementById('template_report_fields').value=fields;
+            document.getElementById('template_report_data').value=results;
+            
+            
+            document.forms[0].submit()
+
+        }
+
+        
+</script>
+<% end %>

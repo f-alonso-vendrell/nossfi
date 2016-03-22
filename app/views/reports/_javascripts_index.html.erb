@@ -1,5 +1,5 @@
 
-<%= render 'javascripts_link_renderer' %> 
+
 
 <script type="text/javascript">
 
@@ -10,7 +10,7 @@
 
 
   //var updatesPresent = false;
-  var originalLenght = <%=@forms.count%>;
+  var originalLenght = <%=@reports.count%>;
 
   var viewState = "idle"; // idle, canDelete, canUpdate, canCreate
 
@@ -18,37 +18,23 @@
   var opt;
 
 
-  <% @filters.each do |filter| %>
-
-    opt = document.createElement('option');
-    opt.innerHTML = "<%= filter.name %>";
-    opt.value = <%= filter.id %>;
-    fragment.appendChild(opt);
-
-  <%end%>
-
-  var sel = document.getElementById('FilterList');
-  sel.appendChild(fragment);
-  <% if ! @cur_filter.nil? %>
-     sel.value = <%=@cur_filter.id%>;
-  <% end %>
 
   
   var  data = [
-    <% @forms.each do |form| %>
-        <% formdata = form.getData() %>
+    <% @reports.each do |report| %>
+        
         { Action: false,
           <% template_fields.each do |field| %>
-             "<%=field[0]%>":"<%= form.getDataVal(field[0]) %>",
+             "<%=field[0]%>":"<%= report.getDataVal(field[0]) %>",
           <% end %>
-          id: "<%= form.id  %>",
-          updated_at: "<%= form.updated_at  %>",
-          <% if form.creator.nil? %>
+          id: "<%= report.id  %>",
+          updated_at: "<%= report.updated_at  %>",
+          <% if report.creator.nil? %>
           creator: "NULL",
           <% else %>
-          creator: "<%= User.find(form.creator).email %>",
+          creator: "<%= User.find(report.creator).email %>",
           <%end%>
-          recipients: "<%= form.recipients %>"
+          results: '<%= link_to "Results", report %>'
         },
     <% end %>
         
@@ -62,7 +48,7 @@
 //var RefFormEditor = setRefFormEditor();
 
 //var RefFormEditor2 = RefFormEditor.prototype.extend();
-//RefFormEditor2.prototype.url = "https://www.elmundo22.es/forms/";
+//RefFormEditor2.prototype.url = "https://www.elmundo22.es/reports/";
 //RefFormEditor2.prototype.myData = manufacturerData;
 
 var RefEditors = {};
@@ -94,7 +80,7 @@ var colFields =  ["Action",
            "<%=field[0]%>",
   <% end %>
   "ID","Last modification", "Last author",
-  "recipients"];
+  "Results"];
 
 var globalColumns = [
       {data: "Action", type: "checkbox", renderer: checkboxRenderer},
@@ -137,7 +123,8 @@ var globalColumns = [
       {data: "creator",
        type: "text",
         readOnly: true},
-      {data: "recipients",
+      {data: "results",
+       renderer: "html",
        type: "text"
        }
     ];
@@ -216,7 +203,7 @@ function onlyExactMatch(queryStr, value) {
 
 </script>
 
-<%= render 'javascripts_common' %> 
+
 
 
 

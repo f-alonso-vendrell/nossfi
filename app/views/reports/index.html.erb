@@ -1,0 +1,35 @@
+<% content_for :title_data, "-Reports " %>
+
+
+<h1>Listing reports</h1>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Template report</th>
+      <th>Creator</th>
+      <th>Data</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reports.each do |report| %>
+      <tr>
+        <td><%= report.template_report_id %></td>
+        <td><%= report.creator %></td>
+        <td><%= report.data %></td>
+        <td><%= link_to 'Show', report %></td>
+        <td><%= link_to 'Edit', edit_report_path(report) %></td>
+        <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Report', new_report_path %>

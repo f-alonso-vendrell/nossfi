@@ -1,3 +1,5 @@
+<% content_for :title_data, "-Filters for "+@template.title %>
+
 <h1>Listing filters</h1>
 
 <table>
@@ -30,5 +32,9 @@
 
 <br>
 <% if ! current_user.nil? %>
+<% if @template.nil? %>
 <%= link_to 'New Filter', new_filter_path %>
+<%else%>
+<%= link_to 'New Filter', new_filter_path(:template_id => @template.id) %>
+<%end%>
 <%end%>

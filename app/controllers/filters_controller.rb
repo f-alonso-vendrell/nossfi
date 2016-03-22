@@ -4,7 +4,25 @@ class FiltersController < ApplicationController
   # GET /filters
   # GET /filters.json
   def index
-    @filters = Filter.all
+
+     if ! params["template_id"].nil?
+
+      @template = Template.find(params["template_id"])
+
+      if ! @template.nil?
+
+         @filters= Filter.where("template = ?",params["template_id"])
+
+      end
+
+    end
+
+    if @filters.nil?
+
+      @filters = Filter.all
+
+    end
+
   end
 
   # GET /filters/1
@@ -17,7 +35,29 @@ class FiltersController < ApplicationController
 
   # GET /filters/new
   def new
-    @filter = Filter.new
+
+    if params["template_id"].nil?
+
+      redirect_to templates_url
+
+    else
+
+      @template = Template.find(params["template_id"])
+
+      if @template.nil?
+
+        redirect_to templates_url
+
+      end
+
+      @filter = Filter.new
+
+      @fields = @template.getFieldsNames;
+
+      @filter.template = @template.id
+
+    end
+
   end
 
   # GET /filters/1/edit
@@ -49,7 +89,7 @@ class FiltersController < ApplicationController
     
     respond_to do |format|
       if @filter.save
-        format.html { redirect_to @filter, notice: 'Filter was successfully created.' }
+        format.html { redirect_to filters_path(:template_id => @filter.template), notice: 'Filter was successfully created.' }
         format.json { render action: 'show', status: :created, location: @filter }
       else
         format.html { render action: 'new' }

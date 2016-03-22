@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<% template_report = TemplateReport.find(@report.template_report_id) %>
+
+<h1>Report based on <%= link_to template_report.title,  template_report  %></h1>
+<br> 
+<h2>Created by: <%= @report.creator %></h2>
+<h2>On: <%= @report.updated_at %></h2>
+<h2>With data:</h2>
+<p>
+  <%= @report.data %>
+</p>
+<h2>Result:</h2>
+
+
+<p>
+  
+  
+  <% @result.keys.each do |section| %>
+   <h3><%= section %></h3>
+   <% groups = @result[section] %>
+
+
+
+   <div id="<%=section%>">
+
+   <script>
+
+      var colFields =  ["GROUPING BY", 
+       <% groups[groups.keys.first].keys.each do |value| %>
+        "<%= value %> count", "<%= value %>empty","<%= value %> sum","<%= value %> max","<%= value %> min",
+       <%end%>
+       ];
+
+		var globalColumns = [
+		       {data: "group_by", type: "text", readOnly: true},
+		       <% groups[groups.keys.first].keys.each do |value| %>
+		        {data: "<%= value %>count", type: "text", readOnly: true},
+		        {data: "<%= value %>empty",type: "text", readOnly: true},
+		        {data: "<%= value %>sum",type: "text", readOnly: true},
+		        {data: "<%= value %>max",type: "text", readOnly: true},
+		        {data: "<%= value %>min",type: "text", readOnly: true},
+		       <%end%>
+		      
+		    ];
+
+		 var data = [
+		    <% groups.keys.each do |group| %>
+
+		      {group_by: "<%= group %>",
+
+		      <% groups[group].keys.each do |value| %>
+		        "<%= value %>count": "<%= groups[group][value]["count"] %>",
+		        "<%= value %>empty": "<%= groups[group][value]["empty"].to_i.to_s %>",
+		        "<%= value %>sum": "<%= groups[group][value]["sum"] %>",
+		        "<%= value %>max": "<%= groups[group][value]["max"] %>",
+		        "<%= value %>min": "<%= groups[group][value]["min"] %>",
+
+		     <%end%>
+
+
+		      },
+
+
+		   <% end %>
+            ];
+
+
+
+      container=document.getElementById('<%=section%>');
+      hot=setupHot(container,globalColumns,colFields,data);
+
+   </script>
+
+
+  <%end%>
+</p>
+
+<%= link_to 'Edit', edit_report_path(@report) %> |
+<%= link_to 'Back', reports_path(:template_report_id =>@report.template_report_id ) %>

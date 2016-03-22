@@ -1,0 +1,41 @@
+<h1>Listing template_reports</h1>
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Desc</th>
+      <th>Fields</th>
+      <th>Data</th>
+      <th>Creator</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @template_reports.each do |template_report| %>
+      <tr>
+        <td><%= link_to template_report.title,  reports_path(:template_report_id => template_report.id) %></td>
+        <td><%= template_report.desc %></td>
+        <td><%= template_report.fields %></td>
+        <td><%= template_report.data %></td>
+        <td><%= template_report.creator %></td>
+        <td><%= link_to 'Show', template_report %></td>
+        <td><%= link_to 'Edit', edit_template_report_path(template_report) %></td>
+        <td><%= link_to 'Destroy', template_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<br/>
+
+<%= form_tag("/template_reports/new", method: "get") do %>
+  <%= submit_tag("New Report Template") %>
+<% end %>

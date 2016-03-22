@@ -1,0 +1,40 @@
+<% content_for :title_data, "-Groupers for "+@template.title %>
+
+<h1>Listing groupers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Name</th>
+      <th>Code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @groupers.each do |grouper| %>
+      <tr>
+        <td><%= grouper.template %></td>
+        <td><%= grouper.name %></td>
+        <td><%= grouper.code %></td>
+        <td><%= link_to 'Show', grouper %></td>
+        <% if ! current_user.nil? %>
+        <td><%= link_to 'Edit', edit_grouper_path(grouper) %></td>
+        <td><%= link_to 'Destroy', grouper, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% if ! current_user.nil? %>
+<% if @template.nil? %>
+<%= link_to 'New grouper', new_grouper_path %>
+<%else%>
+<%= link_to 'New grouper', new_grouper_path(:template_id => @template.id) %>
+<%end%>
+<%end%>

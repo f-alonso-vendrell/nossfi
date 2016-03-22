@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102175023) do
+ActiveRecord::Schema.define(version: 20160312222828) do
 
   create_table "admins", force: true do |t|
     t.text     "data"
@@ -58,6 +58,33 @@ ActiveRecord::Schema.define(version: 20160102175023) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "data",        limit: 255
+  end
+
+  create_table "groupers", force: true do |t|
+    t.string   "name"
+    t.integer  "template"
+    t.text     "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reports", force: true do |t|
+    t.integer  "template_report_id"
+    t.integer  "creator"
+    t.text     "data"
+    t.text     "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "template_reports", force: true do |t|
+    t.string   "title"
+    t.string   "desc"
+    t.string   "fields"
+    t.string   "data"
+    t.integer  "creator"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "templates", force: true do |t|

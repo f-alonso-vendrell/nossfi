@@ -46,6 +46,12 @@ buttonMngr = {
           document.getElementById('updateButton').style.display = 'inline';
           document.getElementById('deleteButton').style.display = 'none';
        }
+       else if ( viewState == "canUpdateAndDelete") 
+       {
+          document.getElementById('creation').style.display = 'none';
+          document.getElementById('updateButton').style.display = 'inline';
+          document.getElementById('deleteButton').style.display = 'inline';
+       }
        else if ( viewState == "canCreate") 
        {
           document.getElementById('creation').style.display = 'inline';

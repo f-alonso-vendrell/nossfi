@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Model:</strong>
+  <%= @grouper.template %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @grouper.name %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @grouper.code %>
+</p>
+
+<%= @result %>
+
+<%= link_to 'Edit', edit_grouper_path(@grouper) %> |
+<%= link_to 'Back', groupers_path %>

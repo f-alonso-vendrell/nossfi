@@ -75,17 +75,17 @@
 
         }
 
-        function deleteSelected()
+        function deleteSelected(resource)
         {
             var items = getSelected();
 
             
-            console.log(result);
+            console.log(result+resource);
 
             if (items.length > 0 )
             {
               var result = confirm("You Are going to delete " + items.length +
-                  " forms, is that OK?");
+                  " " + resource + "s, is that OK?");
 
               if (result)
               {
@@ -97,9 +97,20 @@
                 fields = fields.slice(0,-1);
                 fields = fields + "}";
 
-                document.getElementById('delete_form_data').value=fields;
-                document.getElementById('delete_form').submit();
+                if ( resource == "report")
+                {
+                  document.getElementById('delete_report_data').value=fields;
+                  document.getElementById('delete_report').submit();
 
+                }
+                else
+                {
+                  document.getElementById('delete_form_data').value=fields;
+                  document.getElementById('delete_form').submit();
+
+                }
+
+                
 
               }
             }
@@ -147,10 +158,12 @@
         }
 
         
-        function updateSelected()
+        function updateSelected(resource)
         {
 
           var items = getSelectedWithData();
+
+          
 
           if (items.length > 0 )
           {
@@ -168,14 +181,25 @@
 
              
              
-            var result = confirm("You Are going to update " + items.length +
-                " forms, is that OK?");
+            var result = confirm("You Are going to update " + items.length + " " +
+                resource + "s, is that OK?");
+
+            console.log(result+resource);
 
             
             if (result)
             {
-              document.getElementById('update_form_data').value="["+fields.toString()+"]";
-              document.getElementById('update_forms').submit();
+                if ( resource == "report")
+                {
+                  document.getElementById('update_report_data').value="["+fields.toString()+"]";
+                  document.getElementById('update_reports').submit();
+
+                }
+                else
+                {
+                  document.getElementById('update_form_data').value="["+fields.toString()+"]";
+                  document.getElementById('update_forms').submit();
+                }
             }
             
           

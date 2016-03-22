@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @template_report.title %>
+</p>
+
+<p>
+  <strong>Desc:</strong>
+  <%= @template_report.desc %>
+</p>
+
+<p>
+  <strong>Fields:</strong>
+  <%= @template_report.fields %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @template_report.data %>
+</p>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @template_report.creator %>
+</p>
+
+<%= link_to 'Edit', edit_template_report_path(@template_report) %> |
+<%= link_to 'Back', template_reports_path %>

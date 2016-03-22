@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Forms</title>
+  <title>Forms <%= yield(:title_data) %> </title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -19,7 +19,7 @@
 <table style="width:100%">
   <tr>
     <th><%= link_to('Home', root_path) %> </th>
-    <th><%= link_to('Filters', filters_path) %> </th>
+    <th><%= link_to('Reports', template_reports_path) %> </th>
     <th><%= link_to('Audits', audit_path) %> </th>
     <th><a href="/howtouse.html">How to use</a></th>
     <th><a href="/techInfo.html">Tech info</a></th>
