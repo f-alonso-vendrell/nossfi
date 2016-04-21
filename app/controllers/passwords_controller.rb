@@ -16,9 +16,10 @@ class PasswordsController < Devise::PasswordsController
 	   
 	   tmp_user = User.new(params.require(:user).permit(:email))
 	   #tmp_user.accepted = false
+	   tmp_user.initPrefs
 	   tmp_user.password = "********"
 	   
-	   logger.debug tmp_user
+	   logger.debug "PREFS: "+tmp_user.preferences
 	   
 	   if tmp_user.save!
 	   

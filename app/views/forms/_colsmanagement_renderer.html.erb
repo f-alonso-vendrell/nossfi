@@ -1,11 +1,26 @@
 
-Col to hide <select id="add"></select> <!-- <input id="add" type="int"> -->
+Col to hide <select id="hideCol"></select> <!-- <input id="hideCol" type="int"> -->
 
 <!-- <%= fbookupload %> -->
 
 Col to show <select id="show"></select>   <!--input id="show" type="int"-->
 
 <% template_fields = @template.getFields %>
+
+<div hidden>
+
+  <% if ! current_user.nil? %>
+
+  <%= form_tag("/users/"+current_user.id.to_s, :id => 'update_prefs', method: "patch") do %>
+  <%= hidden_field_tag(:update_user_data,"") %>
+  <%= submit_tag("Update") %>
+
+  <% end %>
+
+<% end %>
+
+
+</div>
 
 <script type="text/javascript">
 
@@ -72,18 +87,72 @@ Col to show <select id="show"></select>   <!--input id="show" type="int"-->
   }
 
   fillDropDown('show');
-  fillDropDown('add');
+  fillDropDown('hideCol');
+
+  function hideColumns()
+  {
+    console.log("hide columns called");
+
+    <% if ! current_user.nil? %>
 
 
+      $.ajax({ url: '/users/'+<%=current_user.id%>+'.json',
+              type: 'GET',
+              beforeSend: null,
+              data: null,
+              success: function(response) {
+
+                console.log("Received from user"+response.preferences.template_prefs[<%=@template.id%>]["hide"]);
+
+                for (var index=0;index<response.preferences.template_prefs[<%=@template.id%>]["hide"].length;index++)
+                {
+                    console.log("NOW:"+response.preferences.template_prefs[<%=@template.id%>]["hide"][index]);
+
+                    var val = response.preferences.template_prefs[<%=@template.id%>]["hide"][index];
+                    var intVal = parseInt(val);
+                    colsToHide.push(intVal);
+                    updateSettings();
+
+
+                }
+
+              }
+            });
+
+      <% end %>
+
+  }
+
+
+  hideColumns();
   
 
-  $("#add").on("change", function(e) {
+  $("#hideCol").on("change", function(e) {
+        console.log("hideCol CALLED");
         var val = this.value;
         this.value = "";
         var intVal = parseInt(val);
         if (intVal >= 0) {
             if (colsToHide.indexOf(intVal) === -1) {
                 colsToHide.push(intVal);
+                console.log("Pushed...");
+
+
+               
+
+               <% if ! current_user.nil? %>
+
+                $.ajax({ url: '/users/'+<%=current_user.id%>+'.json',
+                  type: 'PATCH',
+                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                  data: {user: {pref_template: "<%=@template.id%>", pref_hide: val}},
+                  success: function(response) {}
+                });
+
+                <% end %>
+
+
+                
             }
         }
         updateSettings();
@@ -98,6 +167,17 @@ Col to show <select id="show"></select>   <!--input id="show" type="int"-->
             var indexToRemove = colsToHide.indexOf(intVal);
             if (~indexToRemove) {
                 colsToHide.splice(indexToRemove, 1);
+
+                <% if ! current_user.nil? %>
+
+                $.ajax({ url: '/users/'+<%=current_user.id%>+'.json',
+                  type: 'PATCH',
+                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                  data: {user: {pref_template: "<%=@template.id%>", pref_show: val}},
+                  success: function(response) {}
+                });
+
+                <% end %>
             }
         }
         updateSettings();

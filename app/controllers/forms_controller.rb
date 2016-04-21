@@ -36,17 +36,53 @@ class FormsController < ApplicationController
 
       @template = Template.find(params["template_id"])
 
+      prefs=nil
+
+      if ! current_user.nil?
+
+        prefs = current_user.getPreferencesFor(params["template_id"])
+
+      end
+
       if ! @template.nil?
 
          @filters= Filter.where("template = ?",params["template_id"])
 
-         if ! params["filter"].nil?
+        if ! params["filter"].nil?
+
            @cur_filter= Filter.where("id = ?",params["filter"]).first
            if @cur_filter.nil?
             @cur_filter=@filters.first
            end
-         else
-          @cur_filter=@filters.first
+
+        else          
+
+          if prefs.nil?
+
+            @cur_filter=@filters.first
+
+            
+
+          else
+
+             @cur_filter = Filter.where("id = ?",prefs["filterId"]).first
+             if @cur_filter.nil?
+              @cur_filter=@filters.first
+              
+             end
+
+           end
+
+        end
+
+        if ! @cur_filter.nil? and ( prefs.nil? or ( prefs["filterId"] != @cur_filter.id ) )
+
+          if ! current_user.nil?
+
+            current_user.setFilterId(params["template_id"],@cur_filter.id)
+            current_user.save
+
+          end
 
         end
 
