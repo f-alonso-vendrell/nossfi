@@ -96,6 +96,10 @@ config.admin_email = 'admin@your domain'
 
 config.loginval = 'a email regexp to match your nossfi domain'
 
+Change email used for notifications ( config/initializers/devise.rb )
+
+config.mailer_sender = 'admin@your domain'
+
 == Pending things to doc:
 
 * Ruby version
