@@ -100,6 +100,8 @@ Change email used for notifications ( config/initializers/devise.rb )
 
 config.mailer_sender = 'admin@your domain'
 
+Also Change /public/starthere.html to let users what this nossfi is about
+
 == Pending things to doc:
 
 * Ruby version

@@ -21,8 +21,8 @@
     <th><%= link_to('Home', root_path) %> </th>
     <th><%= link_to('Reports', template_reports_path) %> </th>
     <th><%= link_to('Audits', audit_path) %> </th>
-    <th><a href="/howtouse.html">How to use</a></th>
-    <th><a href="/techInfo.html">Tech info</a></th>
+    <th><a href="/starthere.html">Start here!</a></th>
+    <th><a href="https://github.com/f-alonso-vendrell/nossfi/wiki">Nossfi Help</a></th>
     <% if user_signed_in? %>
     <th><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></th>
     <% else %>
