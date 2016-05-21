@@ -1,6 +1,69 @@
 var container;
 var hot;
 
+function handleFileSelect(evt,hotToUpdate) {
+
+  var files = evt.files; // FileList object
+
+  // files is a FileList of File objects. List some properties.
+  var output = [];
+  for (var i = 0, f; f = files[i]; i++) 
+  {
+    console.log("FILE: "+f);
+
+    // Only process image files.
+    //if (!f.type.match('text/csv')) {
+    //  console.log("not csv");
+    //  continue;
+    //}
+
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+    
+      output.push(theFile.result);
+      return function(e) {
+
+        // convert into 2D Array
+        console.log("calling template Parser");
+        var data_new = formParser(e.target.result);
+
+        console.log(data_new);
+
+        var data2 = hotToUpdate.getData();
+        for (var i = 0; i < data2.length; i++) {
+          var data_tmp = data2[i];
+          console.log("HOT IS: "+JSON.stringify(data_tmp));
+                
+        }
+        //console.log("HOT IS: "+data2);
+        data2.pop();
+        for (var i = 0; i < data_new.length; i++) {
+          data2.push(data_new[i]);
+        };
+        //data2.push(data_new);
+        console.log("HOT IS NOW: "+data2);
+        for (var i = 0; i < data2.length; i++) {
+          var data_tmp = data2[i];
+          console.log("HOT IS: "+JSON.stringify(data_tmp));
+        }
+        hotToUpdate.render();
+
+
+        console.log(e.target.result);
+      };
+
+    })(f);
+
+    console.log("about to read");
+
+  reader.readAsText(f);
+
+   }
+};
+
+
 function setupHot(mycontainer,mycolumns,mycolhearders,mydata)
 {
 
@@ -26,6 +89,11 @@ function setupHot(mycontainer,mycolumns,mycolhearders,mydata)
   myhot.addHook('afterChange', function(changes, source) {
     console.log("Change on"+changes+"\n"+source);
     if (source=="external")
+    {
+      return;
+    }
+
+    if ( viewState == "notlogged" )
     {
       return;
     }

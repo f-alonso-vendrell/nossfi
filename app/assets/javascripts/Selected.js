@@ -33,12 +33,12 @@
         {
           var ret_data = new Array();
 
-          console.log("Get Selected with data");
+          console.log("Get Selected with data: "+data.length );
 
              for(var i=0;i<data.length;i++)
              {
                 var item = data[i];
-                console.log(item.Action);
+                console.log("Item "+i+" is selected: "+item.Action);
 
                 if (item.Action)
                 {
@@ -65,13 +65,21 @@
 
         function exportSelected()
         {
+            console.log("start export Selected " + colFields);
+
             var items = getSelectedWithData();
 
-            var headers = colFields;
-            headers.shift();
+            if ( items.length != 0 )
+            {
+              var headers = colFields.slice();
+              headers.shift();
 
-            exportAsCSV(colFields,items);
+              exportAsCSV(headers,items);
+            }
 
+            
+
+            console.log("end export Selected");
 
         }
 
@@ -148,7 +156,8 @@
               document.getElementById('create_form_creator').value=user_id;
               document.getElementById('create_form_private').value="false";
               document.getElementById('create_form_data').value="["+fields.toString()+"]";
-              document.forms[0].submit();
+              document.getElementById('create_form').submit();
+              //document.forms[0].submit();
             }
             
           

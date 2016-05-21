@@ -44,6 +44,8 @@ Reports based on Template <%= link_to @template.title,  @template  %>
 
 <input id="updateButton" type="button" value="Submit Updated Report" onclick="updateSelected('report');" />
 
+
+
 <div id="creation">
 
   <input id="createButton" type="button" value="Submit New Report" onclick="createForms('<%= @template.id %>','<%= current_user.id %>');" />

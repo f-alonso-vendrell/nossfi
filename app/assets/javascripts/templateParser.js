@@ -42,6 +42,35 @@
 
  }
 
+ function formParser(csv) {
+
+  console.log("FormParser called");
+
+  raw_array = csv.csvToArray();
+
+  var retData = new Array(raw_array.length-1);
+
+  //var retData = "\[\{\"a\": \"Action\", \"b\": \"checkbox\"\}\]";
+
+  for (var i = 0; i < retData.length; i++) {
+    var obj = {};
+    for (var j = 0; j < raw_array[0].length; j++) {
+      obj[raw_array[0][j]] = raw_array[i+1][j];
+    }
+    retData[i]=obj;
+  }
+
+  
+
+
+
+   //return JSON.stringify(retData);
+   //return JSON.parse(retData);
+
+   return retData;
+
+ }
+
 
  function templateParser(csv) {
 
@@ -53,7 +82,7 @@
 
     for (i = 0; i < fields_array.length; i++) {
 
-    	field_data = [fields_array[i],"","","text",""];
+      field_data = [fields_array[i],"","","text",""];
 
         if ( raw_array.length > 1)
         {

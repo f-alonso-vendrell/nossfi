@@ -87,6 +87,29 @@ var fragment = document.createDocumentFragment();
 
 <input id="updateButton" type="button" value="Submit Updated Forms" onclick="updateSelected();" />
 
+<script language="JavaScript" type="text/javascript">
+function HandleBrowseClick()
+{
+    var fileinput = document.getElementById("browseFS");
+    fileinput.click();
+}
+function Handlechange()
+{
+var fileinput = document.getElementById("browseFS");
+var textinput = document.getElementById("filenameSelected");
+textinput.value = fileinput.value;
+document.getElementById("fakeBrowse").value = "Import CSV data ("+fileinput.value+")";
+
+//document.getElementById('filenameSelected').addEventListener('change', handleFileSelect, false);
+handleFileSelect(fileinput,hot);
+
+}
+</script>
+
+<input type="file" id="browseFS" name="fileupload" style="display: none" onChange="Handlechange();"/>
+<input type="text" id="filenameSelected" style="display: none" readonly="true"/>
+<input type="button" value="Import CSV data" id="fakeBrowse" onclick="HandleBrowseClick();"/>
+
 <div id="creation">
 
   <input id="createButton" type="button" value="Submit New Forms" onclick="createForms('<%= @template.id %>','<%= current_user.id %>');" />
