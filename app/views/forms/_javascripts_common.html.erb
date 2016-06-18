@@ -1,26 +1,61 @@
 
 <script type="text/javascript">
 
-		function exportAsCSV(headers,data)
-		{
-			var csvContent = "data:text/csv;charset=utf-8,";
+    function exportAsCSV(headers,data)
+    {
+      var csvContent = "data:text/csv;charset=utf-8,";
 
-			csvContent += headers.join(",");
-			
-			csvContent += "\n";
+      csvContent += headers.join(",");
 
-			for (var i=0;i<data.length;i++)
-			{
-				csvContent += data[i].join(",");
-				if (i < data.length-1)
-				{
-					csvContent += "\n";
-				}
-			}
+      console.log("cvs, headers are: " + csvContent);
+      
+      csvContent += "\n";
 
-			window.open(encodeURI(csvContent));
+      for (var i=0;i<data.length;i++)
+      {
+        console.log("data keys: "+data.keys());
 
-		}
+        for (var property in data[i]) {
+
+          console.log("property: "+property+" "+data[i][property]);
+
+        }
+
+        for ( var j=0;j<headers.length;j++)
+        {
+          var header = headers[j];
+
+          if ( header == "ID" )
+          {
+            header="id";
+          }
+          else if ( header == "Last modification")
+          {
+            header="updated_at";
+          }
+          else if ( header == "Last author")
+          {
+            header="creator";
+          }
+
+
+
+          console.log("into CVS: "+data[i][header]);
+
+          csvContent += data[i][header]+",";
+          
+
+        }
+        if (i < data.length-1)
+        {
+          csvContent += "\n";
+        }
+        
+      }
+
+      window.open(encodeURI(csvContent));
+
+    }
 
         function checkAndSet(indata)
         {

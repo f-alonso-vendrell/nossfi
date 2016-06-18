@@ -63,6 +63,20 @@ function handleFileSelect(evt,hotToUpdate) {
    }
 };
 
+function setHotReadOnly(myhot)
+{
+  myhot.updateSettings({
+            cells: function (row, col, prop) {
+              var cellProperties = {};
+
+              if (col > 0) {
+                cellProperties.readOnly = true;
+              }
+
+              return cellProperties;
+            }
+          });
+}
 
 function setupHot(mycontainer,mycolumns,mycolhearders,mydata)
 {

@@ -12,26 +12,21 @@
   //var updatesPresent = false;
   var originalLenght = <%=@forms.count%>;
 
-  var viewState = "idle"; // idle, canDelete, canUpdate, canCreate
+  <% if current_user.nil? %>
+
+     var viewState = "notlogged"; // notlogged, idle, canDelete, canUpdate, canCreate
+
+  <% else %>
+
+     var viewState = "idle"; // notlogged, idle, canDelete, canUpdate, canCreate
+
+  <% end %>
 
   var fragment = document.createDocumentFragment();
   var opt;
 
 
-  <% @filters.each do |filter| %>
-
-    opt = document.createElement('option');
-    opt.innerHTML = "<%= filter.name %>";
-    opt.value = <%= filter.id %>;
-    fragment.appendChild(opt);
-
-  <%end%>
-
-  var sel = document.getElementById('FilterList');
-  sel.appendChild(fragment);
-  <% if ! @cur_filter.nil? %>
-     sel.value = <%=@cur_filter.id%>;
-  <% end %>
+  
 
   
   var  data = [
@@ -144,6 +139,12 @@ var globalColumns = [
 
 container=document.getElementById('example');
 hot=setupHot(container,globalColumns,colFields,data);
+
+if (viewState == "notlogged")
+{
+  setHotReadOnly(hot);
+}
+
 
 //hot2=setupHot(document.getElementById('example2'));
 

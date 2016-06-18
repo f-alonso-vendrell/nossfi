@@ -20,11 +20,13 @@ Col to show<input id="show" type="int"> -->
 
 <select id="FilterList"></select>
 <script>
-var fragment = document.createDocumentFragment();
+  var fragment = document.createDocumentFragment();
   var opt;
 
 
   <% @filters.each do |filter| %>
+
+    console.log("adding filter"+"<%=filter.name%>");
 
     opt = document.createElement('option');
     opt.innerHTML = "<%= filter.name %>";

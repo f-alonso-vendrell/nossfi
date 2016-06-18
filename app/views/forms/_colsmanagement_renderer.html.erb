@@ -102,6 +102,18 @@ Col to show <select id="show"></select>   <!--input id="show" type="int"-->
               data: null,
               success: function(response) {
 
+                if ( response.preferences.template_prefs[<%=@template.id%>] == null )
+                {
+                  return;
+                }
+
+                if ( response.preferences.template_prefs[<%=@template.id%>]["hide"] == null )
+                {
+                  return;
+                }
+
+
+
                 console.log("Received from user"+response.preferences.template_prefs[<%=@template.id%>]["hide"]);
 
                 for (var index=0;index<response.preferences.template_prefs[<%=@template.id%>]["hide"].length;index++)
